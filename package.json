@@ -1,0 +1,7 @@
+{
+  "name": "node-puppeteer",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "author": "rizalarfiyan <rizal.arfiyan.23@gmail.com>"
+}
