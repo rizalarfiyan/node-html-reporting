@@ -284,3 +284,6 @@ dist
 
 # SvelteKit build / generate output
 .svelte-kit
+
+# PDF files
+*.pdf

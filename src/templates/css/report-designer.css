@@ -1,0 +1,345 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base */
+html {
+  -webkit-print-color-adjust: exact;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.5px;
+}
+
+body {
+  background-color: #ccc;
+  position: relative;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+table {
+  border-spacing: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  table-layout: fixed;
+}
+
+table td,
+table th {
+  padding: 4px 6px;
+}
+
+/* column */
+.col {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.col .col {
+  justify-content: space-between;
+}
+
+.col .column,
+.col .column .col .column {
+  max-width: 260px;
+}
+
+/* title */
+.title {
+  margin: auto 0 30px;
+  color: #21386b;
+}
+
+.title span {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.title .heading {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* page */
+.page {
+  position: relative;
+  background-color: white;
+  width: 29.7cm;
+  height: 21cm;
+  display: block;
+  margin: 0 auto 1cm;
+  padding: 2cm;
+
+  overflow: hidden;
+  page-break-after: always;
+}
+
+.page:first-of-type {
+  margin-top: 1cm;
+}
+
+.page-1,
+.footer,
+.footer .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-1 {
+  flex-direction: column;
+}
+
+.page-1 img {
+  width: 620px;
+  height: 90px;
+  object-fit: cover;
+}
+
+.page-1 .header {
+  margin-bottom: 0;
+}
+
+.page-2 tr td:first-child {
+  min-width: 400px;
+  padding-left: 0;
+}
+
+.page-2 .header {
+  margin: 20px auto 10px;
+}
+
+.page-2 .header:not(:nth-of-type(1)) {
+  margin: 30px auto 10px;
+}
+
+.page-3 img {
+  max-width: 790px;
+  margin: auto;
+}
+
+.page-5 img {
+  max-width: 830px;
+  margin: auto;
+}
+
+.page-6 .col .column,
+.page-9 .col .column {
+  max-width: 220px;
+}
+
+.page-6 .col:not(:first-child) {
+  margin-top: 14px;
+}
+
+
+.page-7 .col .column:first-child {
+  max-width: 700px;
+}
+
+.page-7 td:first-child,
+.page-7 th:first-child {
+  width: 30px;
+}
+
+.page-7 td:nth-child(3),
+.page-7 td:nth-child(4),
+.page-7 th:nth-child(3),
+.page-7 th:nth-child(4) {
+  width: 50px;
+}
+
+.page-7 .column .header {
+  margin: 20px auto 10px;
+  display: flex;
+  align-items: center;
+}
+
+.page-7 .column .header svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+}
+
+.page-7 .note {
+  margin-top: -20px;
+}
+
+.page-8 .image {
+  max-width: 920px;
+  margin: auto;
+}
+
+.page-9 .col {
+  margin-top: 10px;
+}
+
+.page-4 tr,
+.page-10 tr {
+  border-bottom: 1px solid #c7c7c7;
+}
+
+.page-4 tr td,
+.page-10 tr td {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.page-4 td:nth-child(1),
+.page-4 th:nth-child(1),
+.page-10 td:nth-child(1),
+.page-10 th:nth-child(1) {
+  width: 40px;
+}
+
+.page-4 td:nth-child(3),
+.page-4 th:nth-child(3) {
+  width: 150px;
+  text-align: right;
+  padding-right: 22px;
+}
+
+.page-4 td:nth-child(3) {
+  font-weight: bold;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.page-4 td:nth-child(3) svg {
+  margin-left: 10px;
+}
+
+.page-10 td:nth-child(3),
+.page-10 th:nth-child(3),
+.page-10 td:nth-child(4),
+.page-10 th:nth-child(4) {
+  width: 70px;
+}
+
+.page-10 td:nth-child(3) {
+  font-weight: bold;
+}
+
+.page-10 td:nth-child(5),
+.page-10 th:nth-child(5) {
+  width: 250px;
+}
+
+.page-4 td:nth-child(4),
+.page-4 th:nth-child(4),
+.page-10 td:nth-child(6),
+.page-10 th:nth-child(6) {
+  width: 170px;
+}
+
+.page-4 td:nth-child(6),
+.page-4 th:nth-child(6) {
+  width: 120px;
+}
+
+.page-4 table td,
+.page-10 table td {
+  padding: 2px 6px;
+}
+
+.page-4 tr td span,
+.page-10 tr td span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.page-4 .header {
+  color: #21386b;
+  margin: 0 auto 10px;
+}
+
+.page-4 .note,
+.page-10 .note {
+  margin-top: 25px;
+}
+
+/* footer */
+.footer {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  font-size: 12px;
+  width: 100%;
+}
+
+.footer img {
+  display: block;
+  width: auto;
+  max-height: 22px;
+  height: 100%;
+  margin-left: 6px;
+}
+
+.footer .num-page {
+  right: 50px;
+  position: absolute;
+  font-weight: bold;
+}
+
+/* note */
+.note {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.note .list {
+  margin-top: 6px;
+  padding-left: 21px;
+}
+
+/* Utility */
+.float-center {
+  text-align: center;
+}
+
+.float-left {
+  text-align: left;
+}
+
+.float-right {
+  text-align: right;
+}
+
+/* Media print */
+@media print {
+  .page {
+    margin: 0 auto!important;
+    box-shadow: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 21cm;
+    max-width: 29.7cm;
+    size: A4 landscape;
+  }
+
+  .footer {
+    bottom: 0;
+  }
+
+  .footer .num-page {
+    right: 0;
+  }
+}

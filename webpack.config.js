@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 require("dotenv").config();
 const CURRENT_WORKING_DIR = process.cwd();
@@ -20,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\{.(js|html|css)}$/,
         exclude: [/(node_modules)/],
         loader: "babel-loader",
         options: {
