@@ -287,3 +287,6 @@ dist
 
 # PDF files
 *.pdf
+
+# Bak File
+*.bak

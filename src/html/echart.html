@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EChart.js</title>
+    <style type="text/css">
+      body {
+        background-color: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        color: #000;
+      }
+
+      #main {
+        width: 1000px;
+        height: 800px;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js"></script>
+    <script src="./js/data-zone.js"></script>
+    <script type="text/javascript">
+      var chartDom = document.getElementById("main");
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      echarts.registerMap("Zone", zoneMap);
+      echarts.registerMap("Public Zone", publicZoneMap);
+      option = {
+        renderer: "svg",
+        visualMap: {
+          left: "right",
+          min: 500000,
+          max: 38000000,
+          inRange: {
+            color: ["#fff", "#3DA8F8"],
+          },
+          text: ["High", "Low"],
+          calculable: true,
+        },
+        series: [
+          // {
+          //   z: 4,
+          //   type: 'map',
+          //   map: 'Public Zone',
+          //   emphasis: {
+          //     label: {
+          //       show: true
+          //     }
+          //   },
+          //   data: [{ name: 'Floor 1', value: 38000000 }]
+          // },
+          {
+            type: "map",
+            map: "Zone",
+            emphasis: {
+              label: {
+                show: true,
+              },
+            },
+            graphic: {
+              image:
+                "https://www.amcharts.com/wp-content/uploads/2013/12/demo_910_none-1.png",
+            },
+            data: [{ name: "Floor 1", value: 38000000 }],
+          },
+        ],
+      };
+
+      myChart.setOption(option);
+
+      let canvas = chartDom.getElementsByTagName("canvas")[0]
+      console.log(canvas)
+      let context = canvas.getContext("2d");
+      context.globalCompositeOperation = 'destination-over';
+      base_image = new Image();
+      base_image.src = imageMap;
+      base_image.onload = function () {
+        context.drawImage(base_image, 0, 0);
+      };
+    </script>
+  </body>
+</html>

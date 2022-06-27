@@ -1,9 +1,3 @@
-// add Page Number
-const footer = document.querySelectorAll(".footer .num-page");
-[...footer].map((data, idx) => {
-  footer[idx].innerHTML = `<p>${(idx += 1)}</p>`;
-});
-
 // Make header perPages
 const pages = document.querySelectorAll(".page");
 pages.forEach((page) => {
@@ -11,18 +5,19 @@ pages.forEach((page) => {
   if (child.length < 2) return;
   const firstElement = child[0];
   const secondElement = child[1];
-  const thirdElement = child[2];
+  const thirdElement = child.length >= 3 ? child[2] : "";
   const firstTag = firstElement.tagName;
   const secondTag = secondElement.tagName;
-  const thirdTag = thirdElement.tagName;
-  const isHeadingTag = firstTag == "H1";
-  if (!(firstTag == "H4" && secondTag == "H1") && !isHeadingTag) return;
+  const isHeadingTag = firstTag == "H3";
+  if (!(firstTag == "H5" && secondTag == "H3") && !isHeadingTag) return;
   const heading = isHeadingTag ? firstElement : secondElement;
   const titleWrap = document.createElement("div");
   titleWrap.className = "title";
   heading.classList = "heading";
   titleWrap.append(heading);
-  if (thirdTag == "H4") titleWrap.append(thirdElement)
+  if (thirdElement != "" && thirdElement.tagName == "H4") {
+    titleWrap.append(thirdElement);
+  }
   if (!isHeadingTag) {
     const subtitle = document.createElement("span");
     subtitle.innerText = firstElement.innerText;
@@ -32,50 +27,16 @@ pages.forEach((page) => {
   page.prepend(titleWrap);
 });
 
-const makeColumn = (selector, devide = 2) => {
-  const domTarget = document.querySelector(selector);
-  const col = document.createElement("div");
-  col.className = "col";
-  domTarget.appendChild(col);
-
-  const columns = [];
-  for (i = 0; i < devide; i++) {
-    const column = document.createElement("div");
-    column.className = "column";
-    col.appendChild(column);
-    columns.push(column);
-  }
-
-  let state = {
-    count: 0,
-    position: 0,
-  };
-  const child = Array.from(domTarget.children).slice(0, -1);
-  const max = Math.floor(child.length / devide);
-  child.forEach((item) => {
-    if (state.count === max) {
-      state.count = 0;
-      state.position++;
-    }
-    columns[state.position].appendChild(item);
-    state.count++;
-  });
-};
-
-// makeColumn(".page-7 .col .column:last-child");
-// let elements = document.querySelectorAll(".page")
-// elements.forEach((element) => {
-//   let parent = element.parentNode;
-//   let wrapper = document.createElement('div');
-//   wrapper.className = 'page'
-//   element.classList.remove('page')
-//   element.classList.add('preview')
-//   parent.replaceChild(wrapper, element);
-//   wrapper.appendChild(element);
-// })
+// add Page Number
+const footer = document.querySelectorAll(".footer .num-page");
+[...footer].map((data, idx) => {
+  footer[idx].innerHTML = `<p>${(idx += 1)}</p>`;
+});
 
 // Add icon in header Dwellers against Footfall Count
-const header = document.querySelectorAll(".page-7 .column .header");
+const header = document.querySelectorAll(
+  ".retail-analytic-scatter .column .header"
+);
 header.forEach((data) => {
   const textHeading = data.innerText;
   data.innerHTML = "";
@@ -123,19 +84,22 @@ header.forEach((data) => {
   data.appendChild(wrapper);
 });
 
-const table = document.querySelectorAll(".page-4 tbody tr td:nth-child(3)");
-const toInt = (str) => parseInt(str.replace(/\D/g, ''))
+// Add colors in table page-4
+const table = document.querySelectorAll(
+  ".overview-table tbody tr td:nth-child(3)"
+);
+const toFloat = (str) => parseFloat(str.replace(/[^\d.]/g, ""));
 const percent = (num, max) => {
-  if (max === 0 || num > max) return 1
-  if (num === 0) return 0
-  return ((num / max)).toFixed(1)
-}
+  if (max === 0 || num > max) return 1;
+  if (num === 0) return 0;
+  return (num / max).toFixed(2);
+};
 
-let maxTime = 0
+let maxTime = 0;
 table.forEach((item) => {
-  const numTime = toInt(item.innerText)
-  if (numTime > maxTime) maxTime = numTime
-})
+  const numTime = toFloat(item.innerText);
+  if (numTime > maxTime) maxTime = numTime;
+});
 
 table.forEach((item) => {
   let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -144,9 +108,11 @@ table.forEach((item) => {
   svg.setAttribute("viewBox", "0 0 24 24");
   svg.setAttribute("width", 10);
   svg.setAttribute("height", 10);
-  svg.setAttribute("fill", `rgba(3, 61, 168, ${percent(toInt(item.innerText), maxTime)})`);
+  svg.setAttribute(
+    "fill",
+    `rgba(3, 61, 168, ${percent(toFloat(item.innerText), maxTime)})`
+  );
   path.setAttribute("d", "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6");
   svg.appendChild(path);
   item.appendChild(svg);
-  console.log(item)
-})
+});

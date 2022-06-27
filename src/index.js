@@ -45,10 +45,11 @@ class PdfReportDesigner {
   }
 
   buildContent = () => {
+    if (!Array.isArray(this.data)) return ""
     return this.data
       .map((block, idx) => {
         const page = idx + 1;
-        const className = this.getClassPerPage(block, page);
+        const className = this.getClassPerPage(page);
 
         let htmlData = "";
         htmlData += this.parser.parse(block).join("");
@@ -60,10 +61,29 @@ class PdfReportDesigner {
       .join("");
   };
 
-  getClassPerPage = (block, page) => {
-    const pages = `page-${page}`;
-    const pagination = block?.pagination || "";
-    return (pages + pagination).trim();
+  getClassPerPage = (page) => {
+    switch (page) {
+      case 1:
+        return 'cover'
+      case 2:
+        return 'content-page'
+      case 3:
+        return 'overview'
+      case 4:
+        return 'overview-detail'
+      case 5:
+        return 'overview-map'
+      case 6:
+        return 'overview-table'
+      case 7:
+        return 'retail-analytic-scatter'
+      case 8:
+        return 'retail-analytic-bar'
+      case 9:
+        return 'facility-dashboard-line'
+      case 10:
+        return 'facility-dashboard-table'
+    }
   };
 
   addNotePerPage = (page) => {
@@ -78,7 +98,6 @@ class PdfReportDesigner {
   };
 
   addFooter = (page) => {
-    if (page === 1) return "";
     return `
     <div class="footer">
       <div class="wrapper">
@@ -150,13 +169,13 @@ const templateHtml = `
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Report Designer</title>
-  <link rel="stylesheet" href="./src/templates/css/normalize.min.css">
-  <link rel="stylesheet" href="./src/templates/css/report-designer.css">
+  <link rel="stylesheet" href="../templates/css/normalize.min.css">
+  <link rel="stylesheet" href="../templates/css/report-designer.css">
 </head>
 <body>
   ${htmlReportDesigner.buildContent()}
-  <script src="./src/templates/js/report-designer.js"></script>
+  <script src="../templates/js/report-designer.js"></script>
   </body>
 </html>
 `
-fs.writeFileSync("index.html", templateHtml);
+fs.writeFileSync("./src/html/index.html", templateHtml);

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas</title>
+  </head>
+  <body>
+    <canvas id="map" width="1000" height="1000"></canvas>
+    <script type="text/javascript">
+      const canvas = document.querySelector("canvas#map");
+      let ctx = canvas.getContext("2d");
+      let x1 = 0;
+      let y1 = 0;
+      let x2 = 400;
+      let y2 = 100;
+
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x1 + Math.abs(y2 - y1), y2);
+      ctx.lineTo(x2, y2);
+
+      ctx.stroke();
+    </script>
+  </body>
+</html>

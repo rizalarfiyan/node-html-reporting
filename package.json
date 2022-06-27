@@ -6,7 +6,7 @@
   "author": "rizalarfiyan <rizal.arfiyan.23@gmail.com>",
   "scripts": {
     "start": "node ./dist/server.bundle.js",
-    "nodemon": "nodemon ./dist/server.bundle.js -e js,html,json,css --ignore ./index.html",
+    "nodemon": "nodemon ./dist/server.bundle.js -e js,html,json,css --ignore ./src/html/index.html",
     "watch": "webpack --watch --mode development --config webpack.config.js",
     "dev": "npm-run-all -p watch nodemon",
     "run": "webpack --mode development --config webpack.config.js && node ./dist/server.bundle.js"
