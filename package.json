@@ -1,5 +1,5 @@
 {
-  "name": "node-puppeteer",
+  "name": "node-html-reporting",
   "version": "1.0.0",
   "main": "./src/index.js",
   "license": "MIT",
