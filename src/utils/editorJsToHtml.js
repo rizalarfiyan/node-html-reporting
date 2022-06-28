@@ -299,7 +299,7 @@ class EditorJsToHtml {
   };
 
   parse = (blocks) => {
-    if (blocks === undefined) return [];
+    if (blocks === undefined || !Array.isArray(blocks)) return [];
 
     return blocks.map((block) => {
       return this.transforms[block?.type]

@@ -16,6 +16,7 @@ pages.forEach((page) => {
   heading.classList = "heading";
   titleWrap.append(heading);
   if (thirdElement != "" && thirdElement.tagName == "H4") {
+    thirdElement.classList = "subheading"
     titleWrap.append(thirdElement);
   }
   if (!isHeadingTag) {
@@ -115,4 +116,11 @@ table.forEach((item) => {
   path.setAttribute("d", "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6");
   svg.appendChild(path);
   item.appendChild(svg);
+});
+
+document.querySelectorAll(".overview-map .note ul.list").forEach((data) => {
+  const addLi = document.createElement("li");
+  addLi.innerText =
+    "* Value shown may be shared by more than one (1) store. Refer to table for complete list.";
+  data.append(addLi);
 });

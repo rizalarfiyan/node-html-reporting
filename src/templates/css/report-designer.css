@@ -74,6 +74,11 @@ table th {
   font-size: 24px;
 }
 
+.title .subheading {
+  margin: 4px 0 0 0;
+  font-size: 18px;
+}
+
 /* page */
 .page {
   position: relative;
@@ -154,7 +159,8 @@ table th {
 }
 
 .overview-map .note {
-  margin-top: -10px;
+  position: absolute;
+  bottom: 60px;
 }
 
 .retail-analytic-scatter .col .column:first-child {
@@ -341,6 +347,10 @@ table th {
 .note .list {
   margin-top: 6px;
   padding-left: 21px;
+}
+
+.note .list li {
+  padding: 2px 0;
 }
 
 /* Utility */

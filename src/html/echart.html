@@ -77,7 +77,6 @@
       myChart.setOption(option);
 
       let canvas = chartDom.getElementsByTagName("canvas")[0]
-      console.log(canvas)
       let context = canvas.getContext("2d");
       context.globalCompositeOperation = 'destination-over';
       base_image = new Image();
