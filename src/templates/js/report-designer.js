@@ -16,7 +16,7 @@ pages.forEach((page) => {
   heading.classList = "heading";
   titleWrap.append(heading);
   if (thirdElement != "" && thirdElement.tagName == "H4") {
-    thirdElement.classList = "subheading"
+    thirdElement.classList = "subheading";
     titleWrap.append(thirdElement);
   }
   if (!isHeadingTag) {
@@ -35,10 +35,18 @@ const footer = document.querySelectorAll(".footer .num-page");
 });
 
 // Add icon in header Dwellers against Footfall Count
-const header = document.querySelectorAll(
+const RAHeader = document.querySelectorAll(
   ".retail-analytic-scatter .column .header"
 );
-header.forEach((data) => {
+const RAHeaderFirstCol = document.querySelector(
+  ".retail-analytic-scatter .column:first-child"
+);
+
+const retailAnalyticHeaderLabel = document.createElement("div");
+retailAnalyticHeaderLabel.classList.add("labels");
+if (!!RAHeaderFirstCol) RAHeaderFirstCol.append(retailAnalyticHeaderLabel);
+
+RAHeader.forEach((data) => {
   const textHeading = data.innerText;
   data.innerHTML = "";
   let svgPath;
@@ -80,6 +88,32 @@ header.forEach((data) => {
     data.appendChild(svg);
   }
 
+  if (!!RAHeaderFirstCol && typeof svgPath != "undefined") {
+    const labelWrapper = document.createElement("div");
+    labelWrapper.classList.add("label");
+    const labelSpanText = document.createElement("span");
+    let svgLabel = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    let pathLabel = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+    svgLabel.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svgLabel.setAttribute("viewBox", "0 0 24 24");
+    pathLabel.setAttribute(
+      "d",
+      "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6"
+    );
+    pathLabel.setAttribute("fill", svgPath.fill);
+    svgLabel.appendChild(pathLabel);
+    labelSpanText.innerText = textHeading;
+    labelWrapper.appendChild(svgLabel);
+    labelWrapper.appendChild(labelSpanText);
+    retailAnalyticHeaderLabel.appendChild(labelWrapper);
+  }
+
   let wrapper = document.createElement("span");
   wrapper.innerText = textHeading;
   data.appendChild(wrapper);
@@ -118,9 +152,55 @@ table.forEach((item) => {
   item.appendChild(svg);
 });
 
+// Add new notes in overview map
 document.querySelectorAll(".overview-map .note ul.list").forEach((data) => {
   const addLi = document.createElement("li");
   addLi.innerText =
     "* Value shown may be shared by more than one (1) store. Refer to table for complete list.";
   data.append(addLi);
 });
+
+// Remove first heading table in overview column
+const overviewHeading = document.querySelectorAll(".overview .column h5");
+overviewHeading.forEach((heading) => {
+  if (heading.innerText.trim() == "") heading.remove();
+});
+
+// Find the disabled and selected images
+const listOverviewTable = [];
+const overviewTable = document.querySelectorAll(
+  ".overview .column:not(:first-of-type) tr"
+);
+overviewTable.forEach((data) => {
+  const child = data.childNodes;
+  if (child.length < 2) return;
+
+  const commonTime = child[1].innerText;
+  if (commonTime.trim() == "") {
+    data.classList.add("disabled");
+    return;
+  }
+
+  listOverviewTable.push({
+    time: toFloat(commonTime),
+    element: data,
+  });
+});
+
+let [min, max] = listOverviewTable.reduce(
+  ([prevMin, prevMax], { time }) => [
+    Math.min(prevMin, time),
+    Math.max(prevMax, time),
+  ],
+  [Infinity, -Infinity]
+);
+
+listOverviewTable.forEach((data) => {
+  if (data.time != min && data.time != max) return;
+  data.element.classList.add("selected");
+});
+
+// Add class for make width
+const overviewColumn = document.querySelector(".overview .col");
+if (!!overviewColumn)
+  overviewColumn.classList.add(`w-${overviewColumn.children.length - 1}`);

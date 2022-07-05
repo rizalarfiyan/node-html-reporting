@@ -19,7 +19,7 @@ export default async function nodeHtmlToPdf(options) {
       async ({ page, data: { html, pdfOptions } }) => {
         let htmlTemplate = "";
         if (!!html) {
-          const template = compile(html, { strict: true });
+          const template = compile(html);
           htmlTemplate = template(html);
         }
 

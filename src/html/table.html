@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table HTML</title>
+</head>
+<body>
+  <style type="text/css">
+    @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base */
+html {
+  -webkit-print-color-adjust: exact;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+  color: #4a4a4a;
+}
+
+body {
+  background-color: #ccc;
+  position: relative;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+table {
+  border-spacing: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  table-layout: fixed;
+}
+
+table td,
+table th {
+  padding: 4px 6px;
+}
+
+/* column */
+.col {
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.col .col {
+  justify-content: space-between;
+}
+
+.col .column,
+.col .column .col .column {
+  max-width: 260px;
+}
+
+/* title */
+.title {
+  margin: auto 0 30px;
+  color: #21386b;
+}
+
+.title span {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.title .heading {
+  margin: 0;
+  font-size: 24px;
+}
+
+.title .subheading {
+  margin: 4px 0 0 0;
+  font-size: 18px;
+}
+
+/* page */
+.page {
+  position: relative;
+  background-color: white;
+  width: 29.7cm;
+  height: 21cm;
+  display: block;
+  margin: 0 auto 1cm;
+  padding: 2cm;
+
+  overflow: hidden;
+  page-break-after: always;
+}
+
+.page:first-of-type {
+  margin-top: 1cm;
+}
+
+.cover,
+.footer,
+.footer .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover {
+  flex-direction: column;
+}
+
+.cover img {
+  max-height: 80px;
+  margin: auto;
+}
+
+.cover .header {
+  margin-bottom: 0;
+}
+
+.cover .header:not(h1) {
+  margin-top: 12px;
+}
+
+.cover h1 {
+  font-size: 26pt;
+}
+
+.cover h3 {
+  font-size: 16pt;
+}
+
+.cover h4,
+.cover h5 {
+  font-size: 10pt;
+}
+
+.cover h5.header {
+  margin-top: 32px;
+  font-weight: normal;
+}
+
+.content-page tr td:first-child {
+  min-width: 400px;
+  padding-left: 0;
+}
+
+.content-page .header {
+  margin: 20px auto 10px;
+}
+
+.content-page .header:not(:nth-of-type(1)) {
+  margin: 30px auto 10px;
+}
+
+.overview img {
+  max-width: 500px;
+  margin: auto;
+}
+
+.overview .col {
+  align-items: flex-start;
+}
+
+.overview .col.w-4 .column {
+  max-width: 220px;
+}
+
+.overview .col.w-5 .column {
+  max-width: 180px;
+}
+
+.overview .column {
+  max-width: 150px;
+}
+
+.overview .column:first-of-type {
+  max-width: 50px !important;
+  font-weight: bold;
+  margin-top: 36px;
+}
+
+.overview h5 {
+  margin: 16px auto 24px;
+}
+
+.overview .col h5 {
+  margin: 0 auto 8px;
+  background: #fafafa;
+  padding: 6px 0;
+  border-radius: 2px;
+}
+
+.overview .column:not(:first-of-type) {
+  padding: 0 10px;
+}
+
+.overview .column:not(:first-of-type) tr:not(:last-child) {
+  border-bottom: 1px solid #c7c7c780;
+}
+
+.overview table tr td:nth-child(2) {
+  text-align: right;
+}
+
+.overview tr.selected {
+  background-color: rgba(3, 61, 168, 0.07);
+}
+
+.overview tr.disabled {
+  opacity: 0.3;
+}
+
+/*! start dummy image */
+.overview .image.dummy {
+  width: 100%;
+  height: 240px;
+  background: rgba(0, 0, 0, 0.04);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+/*! end dummy image */
+
+.overview-map img {
+  max-height: 620px;
+  margin: auto;
+}
+
+.overview-map .note {
+  position: absolute;
+  bottom: 60px;
+}
+
+.retail-analytic-scatter .col .column:first-child {
+  max-width: 700px;
+}
+
+.retail-analytic-scatter td:first-child,
+.retail-analytic-scatter th:first-child {
+  width: 30px;
+}
+
+.retail-analytic-scatter td:nth-child(3),
+.retail-analytic-scatter td:nth-child(4),
+.retail-analytic-scatter th:nth-child(3),
+.retail-analytic-scatter th:nth-child(4) {
+  width: 50px;
+}
+
+.retail-analytic-scatter .column .header {
+  margin: 20px auto 10px;
+  display: flex;
+  align-items: center;
+}
+
+.retail-analytic-scatter .column .header svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+}
+
+.retail-analytic-scatter .note {
+  margin-top: 0;
+}
+
+.retail-analytic-scatter .labels {
+  position: absolute;
+  top: 35px;
+  left: 86px;
+  display: flex;
+  font-size: 12px;
+}
+
+.retail-analytic-scatter .labels svg {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+}
+
+.retail-analytic-scatter .label {
+  display: contents;
+}
+
+.retail-analytic-scatter .label:not(:last-child) span {
+  margin-right: 16px;
+}
+
+.retail-analytic-bar .image {
+  max-width: 920px;
+  margin: auto;
+}
+
+.facility-dashboard-line .col {
+  margin-top: 10px;
+}
+
+.facility-dashboard-line .col .column {
+  max-width: 220px;
+}
+
+.overview-table tr,
+.facility-dashboard-table tr {
+  border-bottom: 1px solid #c7c7c780;
+}
+
+.overview-table thead tr,
+.facility-dashboard-table thead tr {
+  border-color: #c7c7c7;
+}
+
+.overview-table tr td,
+.facility-dashboard-table tr td {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.overview-table td:nth-child(1),
+.overview-table th:nth-child(1),
+.facility-dashboard-table td:nth-child(1),
+.facility-dashboard-table th:nth-child(1) {
+  width: 40px;
+}
+
+.overview-table td:nth-child(3),
+.overview-table th:nth-child(3) {
+  width: 150px;
+  text-align: right;
+  padding-right: 22px;
+}
+
+.overview-table td:nth-child(3) {
+  font-weight: bold;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.overview-table td:nth-child(3) svg {
+  margin-left: 10px;
+}
+
+.facility-dashboard-table td:nth-child(3),
+.facility-dashboard-table th:nth-child(3),
+.facility-dashboard-table td:nth-child(4),
+.facility-dashboard-table th:nth-child(4) {
+  width: 70px;
+}
+
+.facility-dashboard-table td:nth-child(3) {
+  font-weight: bold;
+}
+
+.facility-dashboard-table td:nth-child(5),
+.facility-dashboard-table th:nth-child(5) {
+  width: 250px;
+}
+
+.overview-table td:nth-child(4),
+.overview-table th:nth-child(4),
+.facility-dashboard-table td:nth-child(6),
+.facility-dashboard-table th:nth-child(6) {
+  width: 150px;
+}
+
+.overview-table td:nth-child(5),
+.overview-table th:nth-child(5) {
+  width: 180px;
+}
+
+.overview-table td:nth-child(6),
+.overview-table th:nth-child(6) {
+  width: 80px;
+}
+
+.overview-table table,
+.facility-dashboard-table table {
+  width: 75%;
+}
+
+.overview-table table td,
+.facility-dashboard-table table td {
+  padding: 5px 6px;
+}
+
+.overview-table tr td span,
+.facility-dashboard-table tr td span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.overview-table .header {
+  color: #21386b;
+  margin: 0 auto 10px;
+}
+
+.overview-table .note,
+.facility-dashboard-table .note {
+  margin-top: 25px;
+}
+
+/* footer */
+.footer {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  font-size: 10px;
+  width: 100%;
+}
+
+.footer span:not(.num-page) {
+  color: #a4a4a4;
+}
+
+.footer img {
+  display: block;
+  width: auto;
+  max-height: 18px;
+  height: 100%;
+  margin-left: 4px;
+}
+
+.footer .num-page {
+  right: 50px;
+  position: absolute;
+  font-weight: bold;
+}
+
+/* note */
+.note {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.note .list {
+  margin-top: 6px;
+  padding-left: 21px;
+}
+
+.note .list li {
+  padding: 2px 0;
+}
+
+/* Utility */
+.float-center {
+  text-align: center;
+}
+
+.float-left {
+  text-align: left;
+}
+
+.float-right {
+  text-align: right;
+}
+
+/* Media print */
+@media print {
+  .page {
+    margin: 0 auto !important;
+    box-shadow: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 21cm;
+    max-width: 29.7cm;
+    size: A4 landscape;
+  }
+
+  .footer {
+    bottom: 0;
+  }
+
+  .footer .num-page {
+    right: 0;
+  }
+
+  .overview-map .note {
+    bottom: 15px;
+  }
+
+  .retail-analytic-scatter .labels {
+    left: 96px;
+  }
+}
+
+    .overview {
+      width: 26.7cm;
+      padding: 20px 0;
+      height: 270px;
+    }</style><div class="page overview"><div class="col"><div class="column"><h5 class="header float-center"></h5>
+    <table>
+      
+      <tbody>
+        <tr><td><span>Mon</span></td></tr><tr><td><span>Tue</span></td></tr><tr><td><span>Wed</span></td></tr><tr><td><span>Thu</span></td></tr><tr><td><span>Fri</span></td></tr><tr><td><span>Sat</span></td></tr><tr><td><span>Sun</span></td></tr>
+      </tbody>
+    </table></div><div class="column"><h5 class="header float-center">Week 1</h5>
+    <table>
+      
+      <tbody>
+        <tr><td><span>30 Oct</span></td><td><span></span></td></tr><tr><td><span>31 Oct</span></td><td><span></span></td></tr><tr><td><span>01 Nov</span></td><td><span>42 mins</span></td></tr><tr><td><span>02 Nov</span></td><td><span>35 mins</span></td></tr><tr><td><span>03 Nov</span></td><td><span>8 mins</span></td></tr><tr><td><span>04 Nov</span></td><td><span>10 mins</span></td></tr><tr><td><span>05 Nov</span></td><td><span>10 mins</span></td></tr>
+      </tbody>
+    </table></div><div class="column"><h5 class="header float-center">Week 2</h5>
+    <table>
+      
+      <tbody>
+        <tr><td><span>06 Nov</span></td><td><span>22 mins</span></td></tr><tr><td><span>07 Nov</span></td><td><span>6 mins</span></td></tr><tr><td><span>08 Nov</span></td><td><span>25 mins</span></td></tr><tr><td><span>09 Nov</span></td><td><span>31 mins</span></td></tr><tr><td><span>10 Nov</span></td><td><span>50 mins</span></td></tr><tr><td><span>11 Nov</span></td><td><span>8 mins</span></td></tr><tr><td><span>12 Nov</span></td><td><span>44 mins</span></td></tr>
+      </tbody>
+    </table></div><div class="column"><h5 class="header float-center">Week 3</h5>
+    <table>
+      
+      <tbody>
+        <tr><td><span>13 Nov</span></td><td><span>46 mins</span></td></tr><tr><td><span>14 Nov</span></td><td><span>68 mins</span></td></tr><tr><td><span>15 Nov</span></td><td><span>80 mins</span></td></tr><tr><td><span>16 Nov</span></td><td><span>40 mins</span></td></tr><tr><td><span>17 Nov</span></td><td><span>54 mins</span></td></tr><tr><td><span>18 Nov</span></td><td><span>65 mins</span></td></tr><tr><td><span>19 Nov</span></td><td><span>64 mins</span></td></tr>
+      </tbody>
+    </table></div><div class="column"><h5 class="header float-center">Week 4</h5>
+    <table>
+      
+      <tbody>
+        <tr><td><span>20 Nov</span></td><td><span>68 mins</span></td></tr><tr><td><span>21 Nov</span></td><td><span>67 mins</span></td></tr><tr><td><span>22 Nov</span></td><td><span>25 mins</span></td></tr><tr><td><span>23 Nov</span></td><td><span>60 mins</span></td></tr><tr><td><span>24 Nov</span></td><td><span>29 mins</span></td></tr><tr><td><span>25 Nov</span></td><td><span>73 mins</span></td></tr><tr><td><span>26 Nov</span></td><td><span>48 mins</span></td></tr>
+      </tbody>
+    </table></div><div class="column"><h5 class="header float-center">Week 5</h5>
+    <table>
+      
+      <tbody>
+        <tr><td><span>27 Nov</span></td><td><span>29 mins</span></td></tr><tr><td><span>28 Nov</span></td><td><span>54 mins</span></td></tr><tr><td><span>29 Nov</span></td><td><span>56 mins</span></td></tr><tr><td><span>30 Nov</span></td><td><span>19 mins</span></td></tr><tr><td><span>01 Dec</span></td><td><span></span></td></tr><tr><td><span>02 Dec</span></td><td><span></span></td></tr><tr><td><span>03 Dec</span></td><td><span></span></td></tr>
+      </tbody>
+    </table></div></div></div><script type="text/javascript">// Make header perPages
+const pages = document.querySelectorAll(".page");
+pages.forEach((page) => {
+  const child = page.children;
+  if (child.length < 2) return;
+  const firstElement = child[0];
+  const secondElement = child[1];
+  const thirdElement = child.length >= 3 ? child[2] : "";
+  const firstTag = firstElement.tagName;
+  const secondTag = secondElement.tagName;
+  const isHeadingTag = firstTag == "H3";
+  if (!(firstTag == "H5" && secondTag == "H3") && !isHeadingTag) return;
+  const heading = isHeadingTag ? firstElement : secondElement;
+  const titleWrap = document.createElement("div");
+  titleWrap.className = "title";
+  heading.classList = "heading";
+  titleWrap.append(heading);
+  if (thirdElement != "" && thirdElement.tagName == "H4") {
+    thirdElement.classList = "subheading";
+    titleWrap.append(thirdElement);
+  }
+  if (!isHeadingTag) {
+    const subtitle = document.createElement("span");
+    subtitle.innerText = firstElement.innerText;
+    titleWrap.prepend(subtitle);
+    firstElement.remove();
+  }
+  page.prepend(titleWrap);
+});
+
+// add Page Number
+const footer = document.querySelectorAll(".footer .num-page");
+[...footer].map((data, idx) => {
+  footer[idx].innerHTML = `<p>${(idx += 1)}</p>`;
+});
+
+// Add icon in header Dwellers against Footfall Count
+const RAHeader = document.querySelectorAll(
+  ".retail-analytic-scatter .column .header"
+);
+const RAHeaderFirstCol = document.querySelector(
+  ".retail-analytic-scatter .column:first-child"
+);
+
+const retailAnalyticHeaderLabel = document.createElement("div");
+retailAnalyticHeaderLabel.classList.add("labels");
+if (!!RAHeaderFirstCol) RAHeaderFirstCol.append(retailAnalyticHeaderLabel);
+
+RAHeader.forEach((data) => {
+  const textHeading = data.innerText;
+  data.innerHTML = "";
+  let svgPath;
+  switch (textHeading.toLowerCase()) {
+    case "high value":
+      svgPath = {
+        path: "M19 5h-2V3H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.39 4.94 5 5 0 0 0 3.61 3V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.61-3A5 5 0 0 0 21 8V7a2 2 0 0 0-2-2ZM5 8V7h2v3.82A3 3 0 0 1 5 8Zm14 0a3 3 0 0 1-2 2.82V7h2Z",
+        fill: "#FFB300",
+      };
+      break;
+    case "traffic drivers":
+      svgPath = {
+        path: "m10.33 11.72-3.39.87a10 10 0 0 1-1.82-5.07c-.3-3 .47-4.86 2.46-5.06s3 2 3.37 4.31a10.08 10.08 0 0 1-.62 4.95Zm.15.75-3.28 1a5.47 5.47 0 0 0 .57 2.35 2 2 0 0 0 2.38 1.42A1.9 1.9 0 0 0 11.41 15a5.67 5.67 0 0 0-.93-2.53Zm5.94-5.72c-2-.2-3 2-3.37 4.31a10.08 10.08 0 0 0 .62 5l3.39.87a10 10 0 0 0 1.82-5.07c.3-3.08-.47-4.86-2.46-5.11Zm-2.9 10a5.67 5.67 0 0 0-.93 2.55 1.9 1.9 0 0 0 1.26 2.21 2 2 0 0 0 2.38-1.42 5.47 5.47 0 0 0 .57-2.35Z",
+        fill: "#27AE60",
+      };
+      break;
+    case "under achievers":
+      svgPath = {
+        path: "m3.5 5.51 6 6 4-4 8.5 9.57-1.41 1.41-7.09-8-4 4L2 7Z",
+        fill: "#3377B3",
+      };
+      break;
+    case "niche players":
+      svgPath = {
+        path: "M7.2 11.2a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm4-8a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm5.6 11.6a3 3 0 1 1-3 3 3 3 0 0 1 3-3Z",
+        fill: "#D3272F",
+      };
+      break;
+  }
+
+  if (typeof svgPath != "undefined") {
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    path.setAttribute("d", svgPath.path);
+    path.setAttribute("fill", svgPath.fill);
+    svg.appendChild(path);
+    data.appendChild(svg);
+  }
+
+  if (!!RAHeaderFirstCol && typeof svgPath != "undefined") {
+    const labelWrapper = document.createElement("div");
+    labelWrapper.classList.add("label");
+    const labelSpanText = document.createElement("span");
+    let svgLabel = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    let pathLabel = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+    svgLabel.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svgLabel.setAttribute("viewBox", "0 0 24 24");
+    pathLabel.setAttribute(
+      "d",
+      "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6"
+    );
+    pathLabel.setAttribute("fill", svgPath.fill);
+    svgLabel.appendChild(pathLabel);
+    labelSpanText.innerText = textHeading;
+    labelWrapper.appendChild(svgLabel);
+    labelWrapper.appendChild(labelSpanText);
+    retailAnalyticHeaderLabel.appendChild(labelWrapper);
+  }
+
+  let wrapper = document.createElement("span");
+  wrapper.innerText = textHeading;
+  data.appendChild(wrapper);
+});
+
+// Add colors in table page-4
+const table = document.querySelectorAll(
+  ".overview-table tbody tr td:nth-child(3)"
+);
+const toFloat = (str) => parseFloat(str.replace(/[^\d.]/g, ""));
+const percent = (num, max) => {
+  if (max === 0 || num > max) return 1;
+  if (num === 0) return 0;
+  return (num / max).toFixed(2);
+};
+
+let maxTime = 0;
+table.forEach((item) => {
+  const numTime = toFloat(item.innerText);
+  if (numTime > maxTime) maxTime = numTime;
+});
+
+table.forEach((item) => {
+  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", 10);
+  svg.setAttribute("height", 10);
+  svg.setAttribute(
+    "fill",
+    `rgba(3, 61, 168, ${percent(toFloat(item.innerText), maxTime)})`
+  );
+  path.setAttribute("d", "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6");
+  svg.appendChild(path);
+  item.appendChild(svg);
+});
+
+// Add new notes in overview map
+document.querySelectorAll(".overview-map .note ul.list").forEach((data) => {
+  const addLi = document.createElement("li");
+  addLi.innerText =
+    "* Value shown may be shared by more than one (1) store. Refer to table for complete list.";
+  data.append(addLi);
+});
+
+// Remove first heading table in overview column
+const overviewHeading = document.querySelectorAll(".overview .column h5");
+overviewHeading.forEach((heading) => {
+  if (heading.innerText.trim() == "") heading.remove();
+});
+
+// Find the disabled and selected images
+const listOverviewTable = [];
+const overviewTable = document.querySelectorAll(
+  ".overview .column:not(:first-of-type) tr"
+);
+overviewTable.forEach((data) => {
+  const child = data.childNodes;
+  if (child.length < 2) return;
+
+  const commonTime = child[1].innerText;
+  if (commonTime.trim() == "") {
+    data.classList.add("disabled");
+    return;
+  }
+
+  listOverviewTable.push({
+    time: toFloat(commonTime),
+    element: data,
+  });
+});
+
+let [min, max] = listOverviewTable.reduce(
+  ([prevMin, prevMax], { time }) => [
+    Math.min(prevMin, time),
+    Math.max(prevMax, time),
+  ],
+  [Infinity, -Infinity]
+);
+
+listOverviewTable.forEach((data) => {
+  if (data.time != min && data.time != max) return;
+  data.element.classList.add("selected");
+});
+
+// Add class for make width
+const overviewColumn = document.querySelector(".overview .col");
+if (!!overviewColumn)
+  overviewColumn.classList.add(`w-${overviewColumn.children.length - 1}`);
+
+//! Dummy chart data
+const imageDummy = document.querySelector(".overview .image");
+console.log(imageDummy)
+console.log(!!imageDummy)
+if (!!imageDummy) {
+  imageDummy.classList.add("dummy");
+  imageDummy.innerHTML = "Chart";
+}
+</script>
+</body>
+</html>
