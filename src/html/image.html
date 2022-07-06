@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-w<idth, initial-scale=1.0" />
+    <title>Image Viewer</title>
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      const BASE_URL = 'http://localhost:7000'
+      const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZXMiOlsxLDIsMyw0XSwiaWF0IjoxNjU2OTE2MDQ5fQ.XPhJl2gUwnGC336lH94Inn4tu-qI1Sn5MIt0Y1v_QkE'
+      console.log(BASE_URL)
+      console.log(TOKEN)
+      $.ajax({
+        type: 'GET',
+        url: `${BASE_URL}/api/report-designer`,
+        dataType: 'text',
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        success: function (result) {
+          $('<img/>').attr('src', result).appendTo('body')
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    </script>
+  </body>
+</html>

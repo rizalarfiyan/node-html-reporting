@@ -6,9 +6,12 @@ const makeTable = () => {
   const dateRequest = "2022-01-15";
 
   const calendar = [];
+  const days = [];
   const today = moment(dateRequest);
-  const startDay = today.clone().startOf("month").startOf("week");
-  const endDay = today.clone().endOf("month").endOf("week");
+  const startMonth = today.clone().startOf('month');
+  const endMonth = today.clone().endOf('month');
+  const startDay = startMonth.clone().startOf('week');
+  const endDay = endMonth.clone().endOf('week');
   const month = today.clone().month();
 
   let date = startDay.clone().subtract(1, "day");
@@ -31,9 +34,29 @@ const makeTable = () => {
     });
   }
 
+  date = startMonth.clone().subtract(1, "day");
+  while(date.isBefore(endMonth, "day")) {
+    days.push(date.add(1, 'days').clone());
+  }
+
   console.log(JSON.stringify(calendar, null, 2));
+  console.log(JSON.stringify(days, null, 2));
 };
 
+const makeTime = () => {
+  const startHour = moment('10:00:00', 'HH:mm:ss');
+  const endHour = moment('22:00:00', 'HH:mm:ss');
+
+  const timeLabel = [];
+  let hours = startHour.clone().subtract(1, 'hours');
+  while (hours.isBefore(endHour, 'hours')) {
+    timeLabel.push(hours.add(1, 'hours').clone().format('h A'));
+  }
+
+  console.log(JSON.stringify(timeLabel, null, 2));
+}
+
 // makeTable();
+// makeTime();
 // MakePdf.buildPdf()
 MakePdf.buildHtml()

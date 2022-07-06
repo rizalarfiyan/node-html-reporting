@@ -39,12 +39,16 @@ table th {
   padding: 4px 6px;
 }
 
+p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 /* column */
 .col {
   position: relative;
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -64,8 +68,8 @@ table th {
 }
 
 .title span {
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .title .heading {
@@ -177,8 +181,11 @@ table th {
   font-weight: bold;
 }
 
-.overview h5 {
-  margin: 26px auto 34px;
+.overview h5,
+.overview-detail h5 {
+  font-size: 12px;
+  margin: 6px auto 24px;
+  font-weight: normal;
 }
 
 .overview .col h5 {
@@ -209,14 +216,45 @@ table th {
   opacity: 0.3;
 }
 
+.overview-detail .col {
+  justify-content: space-between;
+}
+
+.overview-detail .column:first-child {
+  max-width: 680px;
+}
+
+.overview-detail p {
+  margin: 0;
+}
+
+.overview-detail .column:not(:first-child) h5 {
+  margin: 24px 0 10px;
+  font-weight: bold;
+}
+
+.overview-detail th:not(:first-child),
+.overview-detail td:not(:first-child) {
+  text-align: right;
+}
+
+.overview-detail tr:not(:last-child) {
+  border-bottom: 1px solid #c7c7c780;
+}
+
+.overview-detail table .selected {
+  background-color: rgba(3, 61, 168, 0.07);
+}
+
 .overview-map img {
   max-height: 620px;
   margin: auto;
 }
 
+.overview-detail .note,
 .overview-map .note {
   position: absolute;
-  bottom: 60px;
+  bottom: 50px;
 }
 
 .retail-analytic-scatter .col .column:first-child {
@@ -292,7 +330,8 @@ table th {
 }
 
 .overview-table thead tr,
-.facility-dashboard-table thead tr {
+.facility-dashboard-table thead tr,
+.overview-detail thead tr {
   border-color: #c7c7c7;
 }
 

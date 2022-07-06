@@ -166,39 +166,70 @@ overviewHeading.forEach((heading) => {
   if (heading.innerText.trim() == "") heading.remove();
 });
 
-// Find the disabled and selected images
-const listOverviewTable = [];
-const overviewTable = document.querySelectorAll(
-  ".overview .column:not(:first-of-type) tr"
-);
-overviewTable.forEach((data) => {
-  const child = data.childNodes;
-  if (child.length < 2) return;
+// Get selected with min and max data
+const selectWithMinMax = (listTable) => {
+  listTable.forEach((listData) => {
+    const [min, max] = listData.reduce(
+      ([prevMin, prevMax], { time }) => [
+        Math.min(prevMin, time),
+        Math.max(prevMax, time),
+      ],
+      [Infinity, -Infinity]
+    );
 
-  const commonTime = child[1].innerText;
-  if (commonTime.trim() == "") {
-    data.classList.add("disabled");
-    return;
-  }
+    listData.forEach((data) => {
+      if (data.time != min && data.time != max) return;
+      data.element.classList.add("selected");
+    });
+  })
+}
 
-  listOverviewTable.push({
-    time: toFloat(commonTime),
-    element: data,
+// Find the disabled and selected tables in overview
+const overviewTableSelect = (selector) => {
+  const listTable = [[]];
+  document.querySelectorAll(selector).forEach((data) => {
+    const child = data.childNodes;
+    if (child.length < 2) return;
+
+    const commonTime = child[1].innerText;
+    if (commonTime.trim() == "") {
+      data.classList.add("disabled");
+      return;
+    }
+
+    listTable[0].push({
+      time: toFloat(commonTime),
+      element: data,
+    });
   });
-});
 
-let [min, max] = listOverviewTable.reduce(
-  ([prevMin, prevMax], { time }) => [
-    Math.min(prevMin, time),
-    Math.max(prevMax, time),
-  ],
-  [Infinity, -Infinity]
-);
+  selectWithMinMax(listTable);
+};
 
-listOverviewTable.forEach((data) => {
-  if (data.time != min && data.time != max) return;
-  data.element.classList.add("selected");
-});
+overviewTableSelect(".overview .column:not(:first-of-type) tr");
+
+// Find the selected tables in overview detail
+const overviewDetailTableSelect = (selector) => {
+  const listTable = [[],[]];
+  document.querySelectorAll(selector).forEach((data) => {
+    const child = data.childNodes;
+    if (child.length < 3) return;
+
+    listTable[0].push({
+      time: toFloat(child[1].innerText),
+      element: child[1],
+    });
+
+    listTable[1].push({
+      time: toFloat(child[2].innerText),
+      element: child[2],
+    });
+  });
+
+  selectWithMinMax(listTable);
+};
+
+overviewDetailTableSelect(".overview-detail tbody tr");
 
 // Add class for make width
 const overviewColumn = document.querySelector(".overview .col");
