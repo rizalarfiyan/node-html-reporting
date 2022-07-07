@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-w<idth, initial-scale=1.0" />
     <title>Image Viewer</title>
+    <style>
+      body {
+        background-color: #2b2b2b;
+      }
+    </style>
   </head>
   <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -21,6 +26,7 @@
           Authorization: `Bearer ${TOKEN}`,
         },
         success: function (result) {
+          console.log(result)
           $('<img/>').attr('src', result).appendTo('body')
         },
         error: function (error) {

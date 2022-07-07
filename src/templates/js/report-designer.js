@@ -136,20 +136,24 @@ table.forEach((item) => {
   if (numTime > maxTime) maxTime = numTime;
 });
 
-table.forEach((item) => {
+const makeSvgSquare = (color) => {
   let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   svg.setAttribute("viewBox", "0 0 24 24");
   svg.setAttribute("width", 10);
   svg.setAttribute("height", 10);
-  svg.setAttribute(
-    "fill",
-    `rgba(3, 61, 168, ${percent(toFloat(item.innerText), maxTime)})`
-  );
+  svg.setAttribute("fill", color);
   path.setAttribute("d", "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6");
   svg.appendChild(path);
-  item.appendChild(svg);
+  return svg;
+};
+
+table.forEach((item) => {
+  const squareSvg = makeSvgSquare(
+    `rgba(3, 61, 168, ${percent(toFloat(item.innerText), maxTime)})`
+  );
+  item.appendChild(squareSvg);
 });
 
 // Add new notes in overview map
@@ -181,8 +185,8 @@ const selectWithMinMax = (listTable) => {
       if (data.time != min && data.time != max) return;
       data.element.classList.add("selected");
     });
-  })
-}
+  });
+};
 
 // Find the disabled and selected tables in overview
 const overviewTableSelect = (selector) => {
@@ -210,7 +214,7 @@ overviewTableSelect(".overview .column:not(:first-of-type) tr");
 
 // Find the selected tables in overview detail
 const overviewDetailTableSelect = (selector) => {
-  const listTable = [[],[]];
+  const listTable = [[], []];
   document.querySelectorAll(selector).forEach((data) => {
     const child = data.childNodes;
     if (child.length < 3) return;
@@ -235,3 +239,45 @@ overviewDetailTableSelect(".overview-detail tbody tr");
 const overviewColumn = document.querySelector(".overview .col");
 if (!!overviewColumn)
   overviewColumn.classList.add(`w-${overviewColumn.children.length - 1}`);
+
+// Add svg data in overview demographic
+const pieColors = [
+  "#033DA8",
+  "#FFB300",
+  "#CAE5FF",
+  "#FF7C0D",
+  "#c23531",
+  "#2f4554",
+  "#61a0a8",
+  "#d48265",
+  "#91c7ae",
+  "#749f83",
+  "#ca8622",
+  "#bda29a",
+  "#6e7074",
+  "#546570",
+  "#c4ccd3",
+];
+const overviewDemographicTable = document.querySelectorAll(
+  ".overview-demographic table"
+);
+overviewDemographicTable.forEach((tableElement) => {
+  const tdTable = tableElement.querySelectorAll("td:first-child");
+  tdTable.forEach((element, idx) => {
+    element.prepend(makeSvgSquare(pieColors[idx]));
+  });
+});
+
+const overviewDemographicTableCol2 = document.querySelectorAll(
+  ".overview-demographic .col:nth-child(2) .column"
+);
+overviewDemographicTableCol2.forEach((element) => {
+  const child = element.children
+  if (child.length < 3) return
+  const wrapper = document.createElement("div");
+  const image = child[1]
+  const table = child[2]
+  wrapper.className = "chart-table";
+  wrapper.append(...[image, table]);
+  element.append(wrapper);
+});

@@ -1,42 +1,36 @@
 import * as fs from "fs";
 import path from "path";
 
-class ReadTemplates {
-  _isAllowed(ext) {
-    const allowExtension = ["html", "css", "js", "json"];
-    return allowExtension.includes(ext);
-  }
+export const getLocation = (fileName, fileType, fileExt = "") => {
+  return path.resolve(
+    process.cwd(),
+    "src",
+    "templates",
+    fileType,
+    `${fileName}.${fileExt || fileType}`
+  );
+};
 
-  _read(fileName, fileType) {
-    if (!this._isAllowed(fileType)) return;
-    return fs
-      .readFileSync(
-        path.resolve(
-          process.cwd(),
-          "src",
-          "templates",
-          fileType,
-          `${fileName}.${fileType}`
-        )
-      )
-      .toString("utf8");
-  }
+export const readTemplate = (fileName, fileType, fileExt = "") => {
+  return fs.readFileSync(getLocation(fileName, fileType, fileExt));
+};
 
-  readCss(fileName) {
-    return this._read(fileName, "css");
-  }
+export const readJson = (filename) => {
+  return JSON.parse(readTemplate(filename, "json").toString("utf8"));
+};
 
-  readJs(fileName) {
-    return this._read(fileName, "js");
-  }
+export const readCss = (filename) => {
+  return readTemplate(filename, "css").toString("utf8");
+};
 
-  readHtml(fileName) {
-    return this._read(fileName, "html");
-  }
+export const readJs = (filename) => {
+  return readTemplate(filename, "js").toString("utf8");
+};
 
-  readJson(fileName) {
-    return JSON.parse(this._read(fileName, "json"));
-  }
-}
-
-export default ReadTemplates;
+export default {
+  getLocation,
+  readTemplate,
+  readJson,
+  readCss,
+  readJs,
+};

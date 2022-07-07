@@ -220,15 +220,21 @@ p {
   justify-content: space-between;
 }
 
+.overview-detail .column {
+  max-width: 290px;
+}
+
 .overview-detail .column:first-child {
   max-width: 680px;
 }
 
-.overview-detail p {
+.overview-detail p,
+.overview-demographic p {
   margin: 0;
 }
 
-.overview-detail .column:not(:first-child) h5 {
+.overview-detail .column:not(:first-child) h5,
+.overview-demographic .col:nth-child(3) h5 {
   margin: 24px 0 10px;
   font-weight: bold;
 }
@@ -252,7 +258,8 @@ p {
 }
 
 .overview-detail .note,
-.overview-map .note {
+.overview-map .note,
+.overview-demographic .note {
   position: absolute;
   bottom: 50px;
 }
@@ -427,6 +434,45 @@ p {
   margin-top: 25px;
 }
 
+.overview-demographic .col:nth-child(2) {
+  justify-content: space-between;
+}
+
+.overview-demographic .col:nth-child(2) .column {
+  width: 100%;
+  max-width: 220px;
+}
+
+.overview-demographic .col:nth-child(3) {
+  justify-content: space-between;
+}
+
+.overview-demographic .col:nth-child(3) .column {
+  max-width: calc(50% - 60px);
+  width: 100%;
+}
+
+.overview-demographic h4 {
+  margin: 10px auto;
+}
+
+.overview-demographic .col img {
+  max-width: 120px;
+  margin: 20px 0;
+}
+
+.overview-demographic table td:nth-child(1) {
+  width: 120px;
+}
+
+.overview-demographic table td svg {
+  margin-right: 6px;
+}
+
+.overview-demographic table td:not(:nth-child(1)) {
+  font-weight: bold;
+}
+
 /* footer */
 .footer {
   position: absolute;
@@ -504,7 +550,8 @@ p {
     right: 0;
   }
 
-  .overview-map .note {
+  .overview-map .note,
+  .overview-demographic .note {
     bottom: 15px;
   }
 

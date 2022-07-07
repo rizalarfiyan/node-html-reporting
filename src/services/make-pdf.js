@@ -1,6 +1,8 @@
-import { ReadTemplates, EditorJsToHtml } from "../utils";
+import { EditorJsToHtml, JsonTools } from "../utils";
 import fs from "fs";
 import nodeHtmlToPdf from "../utils/htmlToPdf";
+import { Axios } from "../libs/axios";
+import { getLocation, readCss, readJs, readJson } from "../utils/readTemplates";
 
 export class PdfReportDesigner {
   constructor(
@@ -12,7 +14,6 @@ export class PdfReportDesigner {
   ) {
     this.options = options;
     this.parser = new EditorJsToHtml();
-    this.reader = new ReadTemplates();
     this.init();
     return this;
   }
@@ -22,7 +23,7 @@ export class PdfReportDesigner {
       throw new Error("No avaliable data");
     }
 
-    this.data = this.reader.readJson(this.options.data).report_designer;
+    this.data = readJson(this.options.data).report_designer;
     this.css = this.readAllCss(this.options?.css || []);
     this.js = this.readAllJs(this.options?.js || []);
     this.logo = this.options.logo;
@@ -31,7 +32,7 @@ export class PdfReportDesigner {
   readAllCss(css) {
     return css
       .map((data) => {
-        return this.reader.readCss(data);
+        return readCss(data);
       })
       .join("");
   }
@@ -39,7 +40,7 @@ export class PdfReportDesigner {
   readAllJs(js) {
     return js
       .map((data) => {
-        return this.reader.readJs(data);
+        return readJs(data);
       })
       .join("");
   }
@@ -83,6 +84,8 @@ export class PdfReportDesigner {
         return "facility-dashboard-line";
       case 10:
         return "facility-dashboard-table";
+      case 11:
+        return "overview-demographic";
     }
   };
 
@@ -187,4 +190,17 @@ export const buildHtml = () => {
 
 export const buildPdf = () => {
   return makeImagePdf(htmlReportDesigner.render());
+};
+
+export const fetchData = async () => {
+  const res = await Axios.get("/report-designer");
+  const location = getLocation("report-designer", "json");
+  const dataJson = JsonTools.isJSON(res.data)
+  ? res.data
+  : JSON.stringify({
+    message: "Report designer is empty",
+    report_designer: [],
+  });
+  console.log(dataJson)
+  fs.writeFileSync(location, dataJson, "utf8");
 };
