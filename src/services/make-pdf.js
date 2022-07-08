@@ -80,12 +80,14 @@ export class PdfReportDesigner {
         return "retail-analytic-scatter";
       case 8:
         return "retail-analytic-bar";
+      // case 9:
+      //   return "facility-dashboard-line";
+      // case 10:
+      //   return "facility-dashboard-table";
       case 9:
-        return "facility-dashboard-line";
-      case 10:
-        return "facility-dashboard-table";
-      case 11:
         return "overview-demographic";
+      case 10:
+        return "over-time-demographic";
     }
   };
 

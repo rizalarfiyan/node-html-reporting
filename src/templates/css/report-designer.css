@@ -48,12 +48,8 @@ p {
 .col {
   position: relative;
   display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-}
-
-.col .col {
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .col .column,
@@ -223,10 +219,6 @@ p {
   opacity: 0.3;
 }
 
-.overview-detail .col {
-  justify-content: space-between;
-}
-
 .overview-detail .column {
   max-width: 290px;
 }
@@ -235,15 +227,8 @@ p {
   max-width: 680px;
 }
 
-.overview-detail p,
-.overview-demographic p {
-  margin: 0 0 6px;
-}
-
-.overview-detail .column:not(:first-child) h5,
-.overview-demographic .col:nth-child(3) h5 {
+.overview-detail .column:not(:first-child) h5 {
   margin: 24px 0 10px;
-  font-weight: bold;
 }
 
 .overview-detail th:not(:first-child),
@@ -262,13 +247,6 @@ p {
 .overview-map img {
   max-height: 620px;
   margin: auto;
-}
-
-.overview-detail .note,
-.overview-map .note,
-.overview-demographic .note {
-  position: absolute;
-  bottom: 50px;
 }
 
 .retail-analytic-scatter .col .column:first-child {
@@ -297,10 +275,6 @@ p {
   width: 24px;
   height: 24px;
   margin-right: 6px;
-}
-
-.retail-analytic-scatter .note {
-  margin-top: 0;
 }
 
 .retail-analytic-scatter .labels {
@@ -438,15 +412,6 @@ p {
   margin: 0 auto 10px;
 }
 
-.overview-table .note,
-.facility-dashboard-table .note {
-  margin-top: 25px;
-}
-
-.overview-table .col {
-  justify-content: space-between;
-}
-
 .overview-table .col .column:first-child {
   max-width: 760px;
 }
@@ -455,17 +420,9 @@ p {
   max-width: 200px;
 }
 
-.overview-demographic .col:nth-child(2) {
-  justify-content: space-between;
-}
-
 .overview-demographic .col:nth-child(2) .column {
   width: 100%;
   max-width: 220px;
-}
-
-.overview-demographic .col:nth-child(3) {
-  justify-content: space-between;
 }
 
 .overview-demographic .col:nth-child(3) .column {
@@ -495,6 +452,29 @@ p {
   font-weight: bold;
   width: 50px;
   text-align: left;
+}
+
+.over-time-demographic .column {
+  width: 100%;
+  max-width: calc(50% - 40px);
+}
+
+.over-time-demographic .col:nth-child(2) p {
+  margin: 0 0 10px;
+}
+
+.over-time-demographic .image {
+  margin: 40px auto;
+}
+
+/* Summary Text */
+.summary-text h5 {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.summary-text p {
+  margin: 0 0 6px;
 }
 
 /* footer */
@@ -529,6 +509,8 @@ p {
 .note {
   margin-top: 10px;
   font-size: 12px;
+  position: absolute;
+  bottom: 50px;
 }
 
 .note .list {
@@ -574,8 +556,7 @@ p {
     right: 0;
   }
 
-  .overview-map .note,
-  .overview-demographic .note {
+  .note {
     bottom: 15px;
   }
 

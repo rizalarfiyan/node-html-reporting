@@ -30,8 +30,10 @@ pages.forEach((page) => {
 
 // add Page Number
 const footer = document.querySelectorAll(".footer .num-page");
+const firstInPage = 2;
 [...footer].map((data, idx) => {
-  footer[idx].innerHTML = `<p>${(idx += 1)}</p>`;
+  if (idx < firstInPage) return;
+  footer[idx].innerHTML = `<p>${idx + 1 - firstInPage}</p>`;
 });
 
 // Add icon in header Dwellers against Footfall Count
@@ -272,12 +274,29 @@ const overviewDemographicTableCol2 = document.querySelectorAll(
   ".overview-demographic .col:nth-child(2) .column"
 );
 overviewDemographicTableCol2.forEach((element) => {
-  const child = element.children
-  if (child.length < 3) return
+  const child = element.children;
+  if (child.length < 3) return;
   const wrapper = document.createElement("div");
-  const image = child[1]
-  const table = child[2]
+  const image = child[1];
+  const table = child[2];
   wrapper.className = "chart-table";
   wrapper.append(...[image, table]);
   element.append(wrapper);
+});
+
+// adding Wrapper for Summary Text
+const headingFive = document.querySelectorAll("h5");
+headingFive.forEach((element) => {
+  if (element.innerText.trim().toLowerCase() != "summary") return;
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "summary-text";
+  element.before(wrapper);
+  let next = element.nextSibling;
+  while (next != null) {
+    if (next.tagName != "P") break;
+    wrapper.append(next);
+    next = element.nextSibling;
+  }
+  wrapper.prepend(element);
 });
