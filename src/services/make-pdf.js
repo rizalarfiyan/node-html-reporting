@@ -88,6 +88,20 @@ export class PdfReportDesigner {
         return "overview-demographic";
       case 10:
         return "over-time-demographic";
+      case 11:
+        return "over-time-table-demographic";
+      case 12:
+        return "over-time-demographic";
+      case 13:
+        return "over-time-table-demographic";
+      case 14:
+        return "over-time-demographic";
+      case 15:
+        return "over-time-table-demographic";
+      case 16:
+        return "over-time-demographic";
+      case 17:
+        return "over-time-table-demographic";
     }
   };
 

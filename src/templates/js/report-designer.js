@@ -176,18 +176,27 @@ overviewHeading.forEach((heading) => {
 const selectWithMinMax = (listTable) => {
   listTable.forEach((listData) => {
     const [min, max] = listData.reduce(
-      ([prevMin, prevMax], { time }) => [
-        Math.min(prevMin, time),
-        Math.max(prevMax, time),
+      ([prevMin, prevMax], { value }) => [
+        Math.min(prevMin, value),
+        Math.max(prevMax, value),
       ],
       [Infinity, -Infinity]
     );
 
     listData.forEach((data) => {
-      if (data.time != min && data.time != max) return;
-      data.element.classList.add("selected");
+      if (data.value != min && data.value != max) return;
+      if (!data.hasOwnProperty("color")) {
+        data.element.classList.add("selected");
+        return;
+      }
+      data.element.style.backgroundColor = hexToRGBA(data.color, 0.1);
     });
   });
+};
+
+const hexToRGBA = (hex, alpha = 1) => {
+  const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
+  return `rgba(${r},${g},${b},${alpha})`;
 };
 
 // Find the disabled and selected tables in overview
@@ -204,7 +213,7 @@ const overviewTableSelect = (selector) => {
     }
 
     listTable[0].push({
-      time: toFloat(commonTime),
+      value: toFloat(commonTime),
       element: data,
     });
   });
@@ -222,12 +231,12 @@ const overviewDetailTableSelect = (selector) => {
     if (child.length < 3) return;
 
     listTable[0].push({
-      time: toFloat(child[1].innerText),
+      value: toFloat(child[1].innerText),
       element: child[1],
     });
 
     listTable[1].push({
-      time: toFloat(child[2].innerText),
+      value: toFloat(child[2].innerText),
       element: child[2],
     });
   });
@@ -299,4 +308,112 @@ headingFive.forEach((element) => {
     next = element.nextSibling;
   }
   wrapper.prepend(element);
+});
+
+// Overtime table
+const tableDemographics = document.querySelectorAll(
+  ".over-time-table-demographic table"
+);
+
+const makeHeaderLabel = (header) => {
+  const labels = document.createElement("div");
+  labels.classList = "labels";
+
+  header.forEach(({ name, color }) => {
+    const label = document.createElement("div");
+    label.classList = "label";
+    const svg = makeSvgSquare(color);
+    const text = document.createElement("span");
+    text.innerText = name;
+    label.append(svg, text);
+    labels.append(label);
+  });
+  return labels;
+};
+
+const findTableHead = (table, elemPage) => {
+  const header = [];
+  table.querySelectorAll("thead th").forEach((element, idx) => {
+    if (idx === 0) return;
+    const color = pieColors[idx - 1];
+    header.push({
+      name: element.innerText,
+      color: typeof color !== "undefined" ? color : "transparent",
+    });
+  });
+  table.querySelector("thead").remove();
+  elemPage.querySelector(".title").append(makeHeaderLabel(header));
+};
+
+tableDemographics.forEach((table) => {
+  const elemPage = table.closest(".page");
+  findTableHead(table, elemPage);
+
+  let counter = 0;
+  const tr = table.querySelectorAll("tbody tr");
+  if (tr.length === 0) return;
+  const totalChild = tr[0].children.length;
+  const listTable = [...new Array(tr[0].children.length - 1)].map(() => []);
+  const maxItems = Math.round(tr.length / 2);
+  tr.forEach((elemTr) => {
+    const td = elemTr.children;
+    const isWeek = td[0].innerText.trim().toLowerCase().includes("week");
+    counter++;
+    Array.from(td).forEach((elemTd, idx) => {
+      if (isWeek) {
+        if (idx !== 0) return elemTd.remove();
+        elemTd.parentElement.classList.add("week-header");
+        elemTd.setAttribute("colspan", td.length);
+        return;
+      }
+      if (idx === 0) return;
+      const color = pieColors[idx - 1];
+      listTable[idx - 1].push({
+        value: toFloat(elemTd.innerText),
+        element: elemTd,
+        color: typeof color !== "undefined" ? color : "transparent",
+      });
+    });
+  });
+  selectWithMinMax(listTable);
+
+  const devideTwo = [...Array(2)].map(() => {
+    const newTable = document.createElement("table");
+    const tbody = newTable.createTBody();
+    const thead = newTable.createTHead();
+    const rowHead = thead.insertRow(0);
+
+    [...Array(totalChild)].forEach((val, idx) => {
+      const columnHead = rowHead.insertCell(idx);
+      if (idx === 0) return (columnHead.innerText = "");
+      const span = document.createElement("span");
+      span.innerText = "";
+      span.classList = "info-header-color";
+      span.style.backgroundColor = pieColors[idx - 1] || "transparent";
+      columnHead.appendChild(span);
+    });
+
+    const column = document.createElement("div");
+    column.classList = "column";
+    column.appendChild(newTable);
+    return {
+      column: column,
+      table: newTable,
+      tbody: tbody,
+    };
+  });
+
+  tr.forEach((elemTr, idx) => {
+    if (idx < maxItems) {
+      devideTwo[0].tbody.appendChild(elemTr);
+      return;
+    }
+    devideTwo[1].tbody.appendChild(elemTr);
+  });
+
+  const col = document.createElement("div");
+  col.classList = "col";
+  devideTwo.forEach((element) => col.append(element.column));
+  table.after(col);
+  table.remove();
 });

@@ -59,6 +59,7 @@ p {
 
 /* title */
 .title {
+  position: relative;
   margin: auto 0 30px;
   color: #21386b;
 }
@@ -278,25 +279,12 @@ p {
 }
 
 .retail-analytic-scatter .labels {
-  position: absolute;
   top: 35px;
   left: 86px;
-  display: flex;
-  font-size: 12px;
-}
-
-.retail-analytic-scatter .labels svg {
-  width: 12px;
-  height: 12px;
-  margin-right: 6px;
 }
 
 .retail-analytic-scatter .label {
   display: contents;
-}
-
-.retail-analytic-scatter .label:not(:last-child) span {
-  margin-right: 16px;
 }
 
 .retail-analytic-bar .image {
@@ -465,6 +453,60 @@ p {
 
 .over-time-demographic .image {
   margin: 40px auto;
+}
+
+.over-time-table-demographic .labels {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.over-time-table-demographic .label {
+  right: 0;
+  bottom: 0;
+  display: inline-flex;
+}
+
+.over-time-table-demographic .week-header {
+  color: #20376a;
+  font-weight: bold;
+  background-color: #fafafa;
+}
+
+.over-time-table-demographic .info-header-color {
+  width: 40px;
+  height: 6px;
+  display: block;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+
+.over-time-table-demographic .column {
+  max-width: calc(50% - 20px);
+}
+
+.over-time-table-demographic td:not(:first-child) {
+  text-align: center;
+}
+
+/* Label */
+.labels {
+  display: flex;
+  font-size: 12px;
+  position: absolute;
+}
+
+.labels svg {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+}
+
+.label:not(:last-child) span {
+  margin-right: 16px;
 }
 
 /* Summary Text */
