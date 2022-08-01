@@ -2,7 +2,7 @@ import moment from "moment";
 import { MakePdf } from "./services";
 
 const makeTable = () => {
-  const dateRequest = "2022-01-15";
+  const dateRequest = "2022-04-15";
 
   const calendar = [];
   const days = [];
@@ -34,12 +34,28 @@ const makeTable = () => {
   }
 
   date = startMonth.clone().subtract(1, "day");
+  const weekend = [];
+  const weekendDay = [];
+  let counter = 0;
   while (date.isBefore(endMonth, "day")) {
-    days.push(date.add(1, "days").clone());
+    const dateDay = date.add(1, "days").clone();
+    const day = dateDay.day();
+    if (weekendDay.length === 0) weekendDay.push([dateDay, dateDay]);
+    if (day === 1 && weekendDay[counter][0] != weekendDay[counter][1]) {
+      weekendDay[counter][1] = dateDay;
+      counter++;
+      if (counter >= 5) break;
+      weekendDay.push([dateDay, dateDay]);
+    }
+    if (day === 5) weekendDay[counter][0] = dateDay;
+    if (day <= 6) weekendDay[counter][1] = dateDay;
+    if (day === 6 || day === 0) weekend.push(dateDay);
+    days.push(dateDay);
   }
 
   console.log(JSON.stringify(calendar, null, 2));
   console.log(JSON.stringify(days, null, 2));
+  console.log(JSON.stringify(weekend, null, 2));
 };
 
 const makeTime = () => {
@@ -106,12 +122,12 @@ class ReportDesigner {
     let date = startDay.clone().subtract(1, "day");
     let week = 1;
     while (date.isBefore(endDay, "day")) {
-      const endOfWeek = date.clone().endOf("week").add(1, 'days');
+      const endOfWeek = date.clone().endOf("week").add(1, "days");
       let count = thisMonth ? endOfWeek.diff(date, "days") : 7;
       if (endOfWeek.month() !== date.month() && week !== 1) {
-        count = this.endMonth.clone().diff(date, "days")
+        count = this.endMonth.clone().diff(date, "days");
       }
-      if (count === 0) break
+      if (count === 0) break;
       const dayPerWeek = Array(count)
         .fill([])
         .map(() => {
@@ -127,16 +143,16 @@ class ReportDesigner {
 
   getFormatRange = () => {
     return `${this.startMonth.format("D")} - ${this.endMonth.format("D MMMM")}`;
-  }
+  };
 
   getData = () => {
     return {
       date: this.date.format("DD-MM-YYYY"),
       days: this.days.map((date) => {
-        return date.format('DD-MM-YYYY');
+        return date.format("DD-MM-YYYY");
       }),
-      startMonth: this.startMonth.format('DD-MM-YYYY'),
-      endMonth: this.endMonth.format('DD-MM-YYYY'),
+      startMonth: this.startMonth.format("DD-MM-YYYY"),
+      endMonth: this.endMonth.format("DD-MM-YYYY"),
       weeks: this.weeks.map((week) => {
         return week.dates.map((date) => {
           return date.format("DD-MM-YYYY");
@@ -144,7 +160,7 @@ class ReportDesigner {
       }),
       weekMonths: this.weekMonths.map((week) => {
         return week.dates.map((date) => {
-          return date.format('DD-MM-YYYY');
+          return date.format("DD-MM-YYYY");
         });
       }),
       weekdays: moment.weekdaysShort(),

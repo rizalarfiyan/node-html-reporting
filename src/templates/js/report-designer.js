@@ -38,7 +38,7 @@ const firstInPage = 2;
 
 // Add icon in header Dwellers against Footfall Count
 const RAHeader = document.querySelectorAll(
-  ".retail-analytic-scatter .column .header"
+  ".retail-analytic-scatter .column:not(:first-child) .header"
 );
 const RAHeaderFirstCol = document.querySelector(
   ".retail-analytic-scatter .column:first-child"
@@ -138,7 +138,10 @@ table.forEach((item) => {
   if (numTime > maxTime) maxTime = numTime;
 });
 
-const makeSvgSquare = (color) => {
+const makeSvg = (
+  color,
+  svgPath = "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6"
+) => {
   let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -146,13 +149,13 @@ const makeSvgSquare = (color) => {
   svg.setAttribute("width", 10);
   svg.setAttribute("height", 10);
   svg.setAttribute("fill", color);
-  path.setAttribute("d", "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6");
+  path.setAttribute("d", svgPath);
   svg.appendChild(path);
   return svg;
 };
 
 table.forEach((item) => {
-  const squareSvg = makeSvgSquare(
+  const squareSvg = makeSvg(
     `rgba(3, 61, 168, ${percent(toFloat(item.innerText), maxTime)})`
   );
   item.appendChild(squareSvg);
@@ -170,6 +173,12 @@ document.querySelectorAll(".overview-map .note ul.list").forEach((data) => {
 const overviewHeading = document.querySelectorAll(".overview .column h5");
 overviewHeading.forEach((heading) => {
   if (heading.innerText.trim() == "") heading.remove();
+});
+
+const overviewDetailHeading = document.querySelectorAll(".overview-detail h5");
+overviewDetailHeading.forEach((val) => {
+  if (!val.innerText.toLowerCase().includes("day with")) return;
+  val.classList.add("muted");
 });
 
 // Get selected with min and max data
@@ -248,8 +257,19 @@ overviewDetailTableSelect(".overview-detail tbody tr");
 
 // Add class for make width
 const overviewColumn = document.querySelector(".overview .col");
-if (!!overviewColumn)
-  overviewColumn.classList.add(`w-${overviewColumn.children.length - 1}`);
+if (!!overviewColumn) {
+  const className = [
+    `w-${overviewColumn.children.length - 1}`,
+    "table-content",
+  ];
+  className.forEach((val) => {
+    overviewColumn.classList.add(val);
+  });
+  const note = document.createElement("span");
+  note.classList.add("public-holiday-note");
+  note.innerText = "*Public holiday";
+  overviewColumn.append(note);
+}
 
 // Add svg data in overview demographic
 const pieColors = [
@@ -275,7 +295,7 @@ const overviewDemographicTable = document.querySelectorAll(
 overviewDemographicTable.forEach((tableElement) => {
   const tdTable = tableElement.querySelectorAll("td:first-child");
   tdTable.forEach((element, idx) => {
-    element.prepend(makeSvgSquare(pieColors[idx]));
+    element.prepend(makeSvg(pieColors[idx]));
   });
 });
 
@@ -291,6 +311,36 @@ overviewDemographicTableCol2.forEach((element) => {
   wrapper.className = "chart-table";
   wrapper.append(...[image, table]);
   element.append(wrapper);
+});
+
+getTriangleProgress = (state) => {
+  switch (state) {
+    case "up":
+      return {
+        path: "M12 0 24 24H0L12 0Z",
+        color: "#27ae60",
+      };
+    case "down":
+      return {
+        path: "M12 24 24 0H0L12 24Z",
+        color: "#bb2b21",
+      };
+    default:
+      return {
+        path: "",
+        color: "transparent",
+      };
+  }
+};
+
+const triangleProgress = document.querySelectorAll(
+  ".overview-demographic table td:last-child"
+);
+triangleProgress.forEach((val) => {
+  const { color, path } = getTriangleProgress(val.innerText);
+  const svg = makeSvg(color, path);
+  svg.classList.add("triangle-progress");
+  val.innerHTML = svg.outerHTML;
 });
 
 // adding Wrapper for Summary Text
@@ -322,7 +372,7 @@ const makeHeaderLabel = (header) => {
   header.forEach(({ name, color }) => {
     const label = document.createElement("div");
     label.classList = "label";
-    const svg = makeSvgSquare(color);
+    const svg = makeSvg(color);
     const text = document.createElement("span");
     text.innerText = name;
     label.append(svg, text);
@@ -345,25 +395,40 @@ const findTableHead = (table, elemPage) => {
   elemPage.querySelector(".title").append(makeHeaderLabel(header));
 };
 
+const hasWeek = (trElement) => {
+  if (trElement == null) return false;
+  return trElement.children[0].innerText.trim().toLowerCase().includes("week");
+};
+
 tableDemographics.forEach((table) => {
   const elemPage = table.closest(".page");
   findTableHead(table, elemPage);
 
-  let counter = 0;
-  const tr = table.querySelectorAll("tbody tr");
+  let tr = table.querySelectorAll("tbody tr");
   if (tr.length === 0) return;
   const totalChild = tr[0].children.length;
   const listTable = [...new Array(tr[0].children.length - 1)].map(() => []);
-  const maxItems = Math.round(tr.length / 2);
-  tr.forEach((elemTr) => {
+  tr.forEach((elemTr, idxTr) => {
     const td = elemTr.children;
-    const isWeek = td[0].innerText.trim().toLowerCase().includes("week");
-    counter++;
+    const isWeek = hasWeek(elemTr);
+    const nextTr = idxTr + 1 < tr.length ? tr[idxTr + 1] : null;
+    if (!hasWeek(nextTr) && !isWeek) elemTr.classList.add("border");
+    if (!isWeek && td.length !== 0) {
+      const day = td[0]?.innerText?.split(",")[0];
+      if (day == "Sat" || day == "Sun") {
+        elemTr.classList.add("weekend");
+      }
+    }
     Array.from(td).forEach((elemTd, idx) => {
       if (isWeek) {
         if (idx !== 0) return elemTd.remove();
-        elemTd.parentElement.classList.add("week-header");
+        const parent = elemTd.parentElement;
+        parent.classList.add("week-header");
         elemTd.setAttribute("colspan", td.length);
+        if (idxTr === 0) return;
+        const newTd = document.createElement("tr");
+        newTd.classList = "spacer";
+        parent.parentNode.insertBefore(newTd, parent);
         return;
       }
       if (idx === 0) return;
@@ -377,6 +442,8 @@ tableDemographics.forEach((table) => {
   });
   selectWithMinMax(listTable);
 
+  tr = table.querySelectorAll("tbody tr");
+  const maxItems = Math.round(tr.length / 2);
   const devideTwo = [...Array(2)].map(() => {
     const newTable = document.createElement("table");
     const tbody = newTable.createTBody();
@@ -404,6 +471,8 @@ tableDemographics.forEach((table) => {
   });
 
   tr.forEach((elemTr, idx) => {
+    if (idx + 1 === maxItems || idx + 1 === tr.length)
+      elemTr.classList.remove("border");
     if (idx < maxItems) {
       devideTwo[0].tbody.appendChild(elemTr);
       return;
@@ -416,4 +485,86 @@ tableDemographics.forEach((table) => {
   devideTwo.forEach((element) => col.append(element.column));
   table.after(col);
   table.remove();
+});
+
+const colorLuminance = (hex, lum) => {
+  hex = String(hex).replace(/[^0-9a-f]/gi, "");
+  if (hex.length < 6) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+  }
+  lum = lum || 0;
+
+  // prettier-ignore
+  let rgb = "#", c, i;
+  for (i = 0; i < 3; i++) {
+    c = parseInt(hex.substr(i * 2, 2), 16);
+    c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
+    rgb += ("00" + c).substr(c.length);
+  }
+  return rgb;
+};
+
+const personasTable = (selector) => {
+  const colorScale = -0.1;
+  let elements = document.querySelectorAll(selector + " .column > *");
+  let counter = 0;
+  for (let idx = 0; idx < elements.length; idx++) {
+    const nextIdx = idx + 1 < elements.length ? idx + 1 : idx;
+    const nextElement = elements[nextIdx];
+    const element = elements[idx];
+    if (
+      !(
+        element.classList?.contains("image") &&
+        nextElement?.tagName?.toLowerCase() === "table"
+      )
+    )
+      continue;
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("personas-table");
+
+    if (counter === 0) {
+      wrapper.classList.add("personas-pie");
+      nextElement
+        .querySelectorAll("tr td:first-child")
+        .forEach((elem, idxTd) => {
+          elem.prepend(makeSvg(pieColors[idxTd]));
+        });
+    } else {
+      nextElement.querySelectorAll("tbody").forEach((item, idx) => {
+        Array.from(item.children).forEach((element, elemIdx) => {
+          if (counter === 1 && elemIdx !== 0) return;
+          const newItem = element.cloneNode(true);
+          element.before(newItem);
+          Array.from(newItem.children).forEach((val, idxTd) => {
+            if (idxTd === 0) return (val.innerText = "");
+            const color = pieColors[idxTd - 1];
+            const span = document.createElement("span");
+            span.innerText = "";
+            span.classList = "info-header-color";
+            span.style.backgroundColor = color
+              ? colorLuminance(color, elemIdx * colorScale)
+              : "transparent";
+            val.innerHTML = span.outerHTML;
+          });
+        });
+      });
+    }
+    element.parentNode.insertBefore(wrapper, element);
+    wrapper.appendChild(element);
+    wrapper.appendChild(nextElement);
+    idx++;
+    counter++;
+  }
+};
+personasTable(".overview-personas");
+
+// Add header notes
+const coverPage = document.querySelector(".page.cover");
+const pageName = coverPage?.querySelector("h3")?.innerText;
+const pageDate = coverPage?.querySelector("h4")?.innerText;
+document.querySelectorAll(".page").forEach((element) => {
+  const header = document.createElement("div");
+  header.classList.add("header-page");
+  header.innerHTML = `${pageName} Report | <b>${pageDate}</b>`;
+  element.appendChild(header);
 });

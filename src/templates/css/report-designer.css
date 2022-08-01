@@ -39,6 +39,14 @@ table th {
   padding: 4px 6px;
 }
 
+table tr.spacer {
+  height: 14px;
+}
+
+table tr.weekend {
+  background: rgba(202, 229, 255, 0.1);
+}
+
 p {
   font-size: 12px;
   line-height: 1.5;
@@ -65,7 +73,6 @@ p {
 }
 
 .title span {
-  font-weight: bold;
   font-size: 12px;
 }
 
@@ -77,6 +84,16 @@ p {
 .title .subheading {
   margin: 4px 0 0 0;
   font-size: 12px;
+}
+
+/* header */
+.header-page {
+  margin-top: 10px;
+  font-size: 12px;
+  position: absolute;
+  top: 50px;
+  right: 2cm;
+  color: #666666 !important;
 }
 
 /* page */
@@ -153,39 +170,47 @@ p {
   margin: 30px auto 10px;
 }
 
+.overview .image:nth-of-type(2) {
+  margin-top: -15px;
+}
+
+.overview .summary-text {
+  margin: 16px 0 10px;
+}
+
 .overview .col {
   align-items: flex-start;
 }
 
-.overview .col.w-4 .column {
+.overview .table-content.w-4 .column {
   max-width: 220px;
 }
 
-.overview .col.w-5 .column {
+.overview .table-content.w-5 .column {
   max-width: 180px;
 }
 
-.overview .column {
+.overview .table-content .column {
   max-width: 150px;
 }
 
-.overview .column:first-of-type {
+.overview .table-content .column:first-of-type {
   max-width: 50px !important;
   margin-top: 36px;
 }
 
-.overview .column:first-of-type td span {
+.overview .table-content .column:first-of-type td span {
   font-weight: bold;
 }
 
 .overview h5,
 .overview-detail h5 {
   font-size: 12px;
-  margin: 6px auto 24px;
+  margin: 6px auto 12px;
   font-weight: normal;
 }
 
-.overview .col h5 {
+.overview .table-content .col h5 {
   margin: 0 auto 8px;
   background: #fafafa;
   padding: 6px 0;
@@ -197,8 +222,9 @@ p {
   padding: 0 10px;
 }
 
+tr.border,
 .overview .column:not(:first-of-type) tr:not(:last-child) {
-  border-bottom: 1px solid #c7c7c780;
+  border-bottom: 0.5px solid #c7c7c780;
 }
 
 .overview-detail th:first-of-type,
@@ -245,13 +271,33 @@ p {
   background-color: rgba(3, 61, 168, 0.07);
 }
 
+.overview-detail h5 {
+  margin: 6px auto 4px;
+}
+
+.overview-detail h5.sub {
+  font-size: 12px;
+  margin: 0 auto 24px;
+  font-weight: normal;
+}
+
+.overview-detail .muted {
+  color: #949494;
+}
+
 .overview-map img {
   max-height: 620px;
   margin: auto;
 }
 
-.retail-analytic-scatter .col .column:first-child {
+.retail-analytic-scatter .column:first-child {
   max-width: 700px;
+}
+
+.retail-analytic-scatter .column:first-child .header {
+  font-weight: normal;
+  justify-content: center;
+  margin-top: -8px;
 }
 
 .retail-analytic-scatter td:first-child,
@@ -270,11 +316,12 @@ p {
   margin: 20px auto 10px;
   display: flex;
   align-items: center;
+  font-size: 12px;
 }
 
 .retail-analytic-scatter .column .header svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   margin-right: 6px;
 }
 
@@ -285,6 +332,14 @@ p {
 
 .retail-analytic-scatter .label {
   display: contents;
+}
+
+.retail-analytic-scatter .column:not(:first-child) {
+  margin-top: -20px;
+}
+
+.retail-analytic-scatter .column:not(:first-child) p {
+  margin-top: 30px;
 }
 
 .retail-analytic-bar .image {
@@ -387,7 +442,8 @@ p {
 .overview table tr td:nth-child(2) span,
 .overview-detail td:not(:first-child) span,
 .overview-table tr td span,
-.overview-demographic td span,
+.personas-pie td:first-child span,
+.overview-demographic table td:first-child span,
 .facility-dashboard-table tr td span {
   display: block;
   white-space: nowrap;
@@ -408,12 +464,22 @@ p {
   max-width: 200px;
 }
 
-.overview-demographic .col:nth-child(2) .column {
+.overview-table .col {
+  align-items: flex-end;
+}
+
+.overview-demographic .col:nth-child(3) .column {
   width: 100%;
   max-width: 220px;
 }
 
-.overview-demographic .col:nth-child(3) .column {
+.overview-demographic .col:nth-child(2) {
+  margin-bottom: 10px;
+}
+
+.overview .col .column,
+.overview-demographic .col:nth-child(2) .column,
+.overview-demographic .col:nth-child(4) .column {
   max-width: calc(50% - 60px);
   width: 100%;
 }
@@ -427,19 +493,37 @@ p {
   margin: 20px 0;
 }
 
+.personas-pie td:first-child,
 .overview-demographic table td:first-child {
   display: flex;
   align-items: center;
 }
 
-.overview-demographic table td svg {
+.personas-pie td svg,
+.overview-demographic table td svg:not(.triangle-progress) {
   margin-right: 6px;
+  min-width: 10px;
+}
+
+.personas-pie td:not(:first-child),
+.overview-demographic table td:not(:first-child) {
+  font-weight: bold;
+  width: 55px;
+  text-align: left;
 }
 
 .overview-demographic table td:not(:first-child) {
-  font-weight: bold;
-  width: 50px;
-  text-align: left;
+  text-align: right;
+}
+
+.overview-demographic table td:last-child {
+  width: 6px;
+  padding: 0;
+}
+
+.overview-demographic table td:last-child svg {
+  width: 6px;
+  height: 6px;
 }
 
 .over-time-demographic .column {
@@ -476,20 +560,54 @@ p {
   background-color: #fafafa;
 }
 
-.over-time-table-demographic .info-header-color {
-  width: 40px;
-  height: 6px;
-  display: block;
-  border-radius: 10px;
-  margin: 0 auto;
-}
-
+.overview-personas .column,
 .over-time-table-demographic .column {
   max-width: calc(50% - 20px);
 }
 
 .over-time-table-demographic td:not(:first-child) {
   text-align: center;
+}
+
+.personas-pie {
+  display: flex;
+  justify-content: space-between;
+  margin: 60px auto 40px;
+}
+
+.personas-pie .image {
+  width: 150px;
+}
+
+.personas-pie table {
+  max-width: calc(100% - 170px);
+}
+
+.overview-personas .column:not(:first-child) {
+  margin-top: -100px;
+}
+
+.overview-personas .column:not(:first-child) p {
+  text-align: center;
+}
+
+.overview-personas div:not(.personas-pie) th,
+.overview-personas div:not(.personas-pie) td {
+  text-align: center;
+}
+
+.overview-personas div:not(.personas-pie) th {
+  vertical-align: top;
+  font-weight: normal;
+}
+
+/* Label Colors Table */
+.info-header-color {
+  width: 40px;
+  height: 6px;
+  display: block;
+  border-radius: 10px;
+  margin: 0 auto;
 }
 
 /* Label */
@@ -564,6 +682,13 @@ p {
   padding: 2px 0;
 }
 
+.public-holiday-note {
+  font-size: 12px;
+  position: absolute;
+  bottom: -20px;
+  right: 16px;
+}
+
 /* Utility */
 .float-center {
   text-align: center;
@@ -588,6 +713,11 @@ p {
     max-height: 21cm;
     max-width: 29.7cm;
     size: A4 landscape;
+  }
+
+  .header-page {
+    top: 0;
+    right: 0;
   }
 
   .footer {

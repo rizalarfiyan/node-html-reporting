@@ -102,11 +102,13 @@ export class PdfReportDesigner {
         return "over-time-demographic";
       case 17:
         return "over-time-table-demographic";
+      case 18:
+        return "overview-personas";
     }
   };
 
   addNotePerPage = (page) => {
-    if (page === 1 || page === 2) return "";
+    if (!(page === 5 || page === 8)) return "";
     return `
     <div class="note">
       <span>Note:</span>
