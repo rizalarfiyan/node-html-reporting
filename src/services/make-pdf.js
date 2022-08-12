@@ -46,8 +46,8 @@ export class PdfReportDesigner {
   }
 
   buildContent = () => {
-    if (!Array.isArray(this.data)) return "";
-    return this.data
+    if (!Array.isArray(this.data.content)) return "";
+    return this.data.content
       .map((block, idx) => {
         const page = idx + 1;
         const className = this.getClassPerPage(page);
@@ -63,48 +63,7 @@ export class PdfReportDesigner {
   };
 
   getClassPerPage = (page) => {
-    switch (page) {
-      case 1:
-        return "cover";
-      case 2:
-        return "content-page";
-      case 3:
-        return "overview";
-      case 4:
-        return "overview-detail";
-      case 5:
-        return "overview-map";
-      case 6:
-        return "overview-table";
-      case 7:
-        return "retail-analytic-scatter";
-      case 8:
-        return "retail-analytic-bar";
-      // case 9:
-      //   return "facility-dashboard-line";
-      // case 10:
-      //   return "facility-dashboard-table";
-      case 9:
-        return "overview-demographic";
-      case 10:
-        return "over-time-demographic";
-      case 11:
-        return "over-time-table-demographic";
-      case 12:
-        return "over-time-demographic";
-      case 13:
-        return "over-time-table-demographic";
-      case 14:
-        return "over-time-demographic";
-      case 15:
-        return "over-time-table-demographic";
-      case 16:
-        return "over-time-demographic";
-      case 17:
-        return "over-time-table-demographic";
-      case 18:
-        return "overview-personas";
-    }
+    return this.data.className[page - 1] || "";
   };
 
   addNotePerPage = (page) => {
@@ -214,11 +173,11 @@ export const fetchData = async () => {
   const res = await Axios.get("/report-designer");
   const location = getLocation("report-designer", "json");
   const dataJson = JsonTools.isJSON(res.data)
-  ? res.data
-  : JSON.stringify({
-    message: "Report designer is empty",
-    report_designer: [],
-  });
-  console.log(dataJson)
+    ? res.data
+    : JSON.stringify({
+        message: "Report designer is empty",
+        report_designer: [],
+      });
+  console.log(dataJson);
   fs.writeFileSync(location, dataJson, "utf8");
 };

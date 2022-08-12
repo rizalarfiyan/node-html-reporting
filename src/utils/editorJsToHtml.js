@@ -128,18 +128,9 @@ class EditorJsToHtml {
       data: { style, items },
     } = block;
     const className = this.getClass(block);
-
-    const listStyle = style === "unordered" ? "ul" : "ol";
-    const recursor = (items, listStyle) => {
-      const list = items.map(({ content, items }) => {
-        if (!content && !items) return `<li>${item}</li>`;
-        let list = "";
-        if (items) list = recursor(items, listStyle);
-        if (content) return `<li>${content}</li>` + list;
-      });
-      return `<${listStyle}${className}>${list.join("")}</${listStyle}>`;
-    };
-    return recursor(items, listStyle);
+    const dom = style === "unordered" ? "ul" : "ol";
+    const list = items.map((val) => `<li>${val}</li>`).join("");
+    return `<${dom}${className}>${list}</${dom}>`;
   };
 
   classImage = ({ withBorder, stretched, withBackground }) => {
@@ -222,8 +213,7 @@ class EditorJsToHtml {
     const {
       data: { html },
     } = block;
-    const className = this.getClass(block);
-    return `<div${className}>${html}</div>`;
+    return html;
   };
 
   parseTable = (block) => {
@@ -243,7 +233,7 @@ class EditorJsToHtml {
             .join("")}
         </tr>
       </thead>`;
-      content.splice(0, 1)
+      content.splice(0, 1);
     }
     const tableBody = content.map((item) => {
       const columns = item.map((column) => {

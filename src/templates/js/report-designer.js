@@ -36,90 +36,114 @@ const firstInPage = 2;
   footer[idx].innerHTML = `<p>${idx + 1 - firstInPage}</p>`;
 });
 
+// make SVG
+const makeSvg = (
+  color,
+  svgPath = "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6"
+) => {
+  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", 10);
+  svg.setAttribute("height", 10);
+  svg.setAttribute("fill", color);
+  path.setAttribute("d", svgPath);
+  svg.appendChild(path);
+  return svg;
+};
+
 // Add icon in header Dwellers against Footfall Count
+const retailAnalytics = (headerElement, firstColElement, secondColElement) => {
+  const firstCol = document.querySelector(firstColElement);
+  const headerLabel = document.createElement("div");
+  headerLabel.classList.add("labels");
+  if (!!firstCol) {
+    const image = firstCol.querySelector(".image");
+    const wrapperChart = document.createElement("div");
+    wrapperChart.classList.add("wrapper-chart");
+    wrapperChart.appendChild(image);
+    wrapperChart.append(headerLabel);
+    firstCol.prepend(wrapperChart);
+  }
+
+  document.querySelectorAll(headerElement).forEach((data) => {
+    const textHeading = data.innerText;
+    data.innerHTML = "";
+    let svgPath;
+    switch (textHeading.toLowerCase()) {
+      case "high value":
+        svgPath = {
+          path: "M19 5h-2V3H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.39 4.94 5 5 0 0 0 3.61 3V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.61-3A5 5 0 0 0 21 8V7a2 2 0 0 0-2-2ZM5 8V7h2v3.82A3 3 0 0 1 5 8Zm14 0a3 3 0 0 1-2 2.82V7h2Z",
+          fill: "#FFB300",
+        };
+        break;
+      case "traffic drivers":
+        svgPath = {
+          path: "m10.33 11.72-3.39.87a10 10 0 0 1-1.82-5.07c-.3-3 .47-4.86 2.46-5.06s3 2 3.37 4.31a10.08 10.08 0 0 1-.62 4.95Zm.15.75-3.28 1a5.47 5.47 0 0 0 .57 2.35 2 2 0 0 0 2.38 1.42A1.9 1.9 0 0 0 11.41 15a5.67 5.67 0 0 0-.93-2.53Zm5.94-5.72c-2-.2-3 2-3.37 4.31a10.08 10.08 0 0 0 .62 5l3.39.87a10 10 0 0 0 1.82-5.07c.3-3.08-.47-4.86-2.46-5.11Zm-2.9 10a5.67 5.67 0 0 0-.93 2.55 1.9 1.9 0 0 0 1.26 2.21 2 2 0 0 0 2.38-1.42 5.47 5.47 0 0 0 .57-2.35Z",
+          fill: "#27AE60",
+        };
+        break;
+      case "under achievers":
+        svgPath = {
+          path: "m3.5 5.51 6 6 4-4 8.5 9.57-1.41 1.41-7.09-8-4 4L2 7Z",
+          fill: "#3377B3",
+        };
+        break;
+      case "niche players":
+        svgPath = {
+          path: "M7.2 11.2a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm4-8a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm5.6 11.6a3 3 0 1 1-3 3 3 3 0 0 1 3-3Z",
+          fill: "#D3272F",
+        };
+        break;
+    }
+
+    if (typeof svgPath != "undefined") {
+      const svgLogo = makeSvg(svgPath.fill, svgPath.path);
+      data.appendChild(svgLogo);
+    }
+
+    if (!!firstCol && typeof svgPath != "undefined") {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("label");
+
+      const svgLabel = makeSvg(svgPath.fill);
+      const span = document.createElement("span");
+      span.innerText = textHeading;
+
+      wrapper.appendChild(svgLabel);
+      wrapper.appendChild(span);
+      headerLabel.appendChild(wrapper);
+    }
+
+    let wrapper = document.createElement("span");
+    wrapper.innerText = textHeading;
+    data.appendChild(wrapper);
+  });
+
+  const secondCol = document.querySelector(secondColElement);
+  if (!!secondCol) {
+    const wrapperTable = document.createElement("div");
+    wrapperTable.classList.add("wrapper-table");
+    secondCol.prepend(wrapperTable);
+    Array.from(secondCol.children).forEach((elem) => {
+      if (!(elem.tagName === "H4" || elem.tagName === "TABLE")) return;
+      wrapperTable.appendChild(elem);
+    });
+  }
+};
+
+retailAnalytics(
+  ".retail-analytic-scatter .column:not(:first-child) .header",
+  ".retail-analytic-scatter .column:first-child",
+  ".retail-analytic-scatter .column:nth-child(2)"
+);
 const RAHeader = document.querySelectorAll(
   ".retail-analytic-scatter .column:not(:first-child) .header"
 );
 const RAHeaderFirstCol = document.querySelector(
   ".retail-analytic-scatter .column:first-child"
 );
-
-const retailAnalyticHeaderLabel = document.createElement("div");
-retailAnalyticHeaderLabel.classList.add("labels");
-if (!!RAHeaderFirstCol) RAHeaderFirstCol.append(retailAnalyticHeaderLabel);
-
-RAHeader.forEach((data) => {
-  const textHeading = data.innerText;
-  data.innerHTML = "";
-  let svgPath;
-  switch (textHeading.toLowerCase()) {
-    case "high value":
-      svgPath = {
-        path: "M19 5h-2V3H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.39 4.94 5 5 0 0 0 3.61 3V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.61-3A5 5 0 0 0 21 8V7a2 2 0 0 0-2-2ZM5 8V7h2v3.82A3 3 0 0 1 5 8Zm14 0a3 3 0 0 1-2 2.82V7h2Z",
-        fill: "#FFB300",
-      };
-      break;
-    case "traffic drivers":
-      svgPath = {
-        path: "m10.33 11.72-3.39.87a10 10 0 0 1-1.82-5.07c-.3-3 .47-4.86 2.46-5.06s3 2 3.37 4.31a10.08 10.08 0 0 1-.62 4.95Zm.15.75-3.28 1a5.47 5.47 0 0 0 .57 2.35 2 2 0 0 0 2.38 1.42A1.9 1.9 0 0 0 11.41 15a5.67 5.67 0 0 0-.93-2.53Zm5.94-5.72c-2-.2-3 2-3.37 4.31a10.08 10.08 0 0 0 .62 5l3.39.87a10 10 0 0 0 1.82-5.07c.3-3.08-.47-4.86-2.46-5.11Zm-2.9 10a5.67 5.67 0 0 0-.93 2.55 1.9 1.9 0 0 0 1.26 2.21 2 2 0 0 0 2.38-1.42 5.47 5.47 0 0 0 .57-2.35Z",
-        fill: "#27AE60",
-      };
-      break;
-    case "under achievers":
-      svgPath = {
-        path: "m3.5 5.51 6 6 4-4 8.5 9.57-1.41 1.41-7.09-8-4 4L2 7Z",
-        fill: "#3377B3",
-      };
-      break;
-    case "niche players":
-      svgPath = {
-        path: "M7.2 11.2a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm4-8a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm5.6 11.6a3 3 0 1 1-3 3 3 3 0 0 1 3-3Z",
-        fill: "#D3272F",
-      };
-      break;
-  }
-
-  if (typeof svgPath != "undefined") {
-    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    svg.setAttribute("viewBox", "0 0 24 24");
-    path.setAttribute("d", svgPath.path);
-    path.setAttribute("fill", svgPath.fill);
-    svg.appendChild(path);
-    data.appendChild(svg);
-  }
-
-  if (!!RAHeaderFirstCol && typeof svgPath != "undefined") {
-    const labelWrapper = document.createElement("div");
-    labelWrapper.classList.add("label");
-    const labelSpanText = document.createElement("span");
-    let svgLabel = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "svg"
-    );
-    let pathLabel = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "path"
-    );
-    svgLabel.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    svgLabel.setAttribute("viewBox", "0 0 24 24");
-    pathLabel.setAttribute(
-      "d",
-      "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6"
-    );
-    pathLabel.setAttribute("fill", svgPath.fill);
-    svgLabel.appendChild(pathLabel);
-    labelSpanText.innerText = textHeading;
-    labelWrapper.appendChild(svgLabel);
-    labelWrapper.appendChild(labelSpanText);
-    retailAnalyticHeaderLabel.appendChild(labelWrapper);
-  }
-
-  let wrapper = document.createElement("span");
-  wrapper.innerText = textHeading;
-  data.appendChild(wrapper);
-});
 
 // Add colors in table page-4
 const table = document.querySelectorAll(
@@ -137,22 +161,6 @@ table.forEach((item) => {
   const numTime = toFloat(item.innerText);
   if (numTime > maxTime) maxTime = numTime;
 });
-
-const makeSvg = (
-  color,
-  svgPath = "M6 0h12s6 0 6 6v12s0 6-6 6h-12s-6 0-6-6v-12s0-6 6-6"
-) => {
-  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("width", 10);
-  svg.setAttribute("height", 10);
-  svg.setAttribute("fill", color);
-  path.setAttribute("d", svgPath);
-  svg.appendChild(path);
-  return svg;
-};
 
 table.forEach((item) => {
   const squareSvg = makeSvg(
@@ -343,17 +351,26 @@ triangleProgress.forEach((val) => {
   val.innerHTML = svg.outerHTML;
 });
 
+document.querySelectorAll(".overview-demographic .image").forEach((element) => {
+  const wrapper = element.parentNode;
+  const parent = document.createElement("div");
+  parent.classList.add(wrapper.classList);
+  wrapper.classList = "overview-demographic-table";
+  wrapper.parentNode.insertBefore(parent, wrapper);
+  parent.appendChild(wrapper);
+});
+
 // adding Wrapper for Summary Text
 const headingFive = document.querySelectorAll("h5");
+const allowHeadingSummary = ["P", "OL", "UL"];
 headingFive.forEach((element) => {
   if (element.innerText.trim().toLowerCase() != "summary") return;
-
   const wrapper = document.createElement("div");
   wrapper.className = "summary-text";
   element.before(wrapper);
   let next = element.nextSibling;
   while (next != null) {
-    if (next.tagName != "P") break;
+    if (allowHeadingSummary.indexOf(next.tagName) === -1) break;
     wrapper.append(next);
     next = element.nextSibling;
   }
@@ -361,9 +378,7 @@ headingFive.forEach((element) => {
 });
 
 // Overtime table
-const tableDemographics = document.querySelectorAll(
-  ".over-time-table-demographic table"
-);
+const tableDemographics = document.querySelectorAll(".over-time-table table");
 
 const makeHeaderLabel = (header) => {
   const labels = document.createElement("div");
@@ -461,7 +476,7 @@ tableDemographics.forEach((table) => {
     });
 
     const column = document.createElement("div");
-    column.classList = "column";
+    column.classList = "column trend-over-time-table";
     column.appendChild(newTable);
     return {
       column: column,
@@ -487,84 +502,18 @@ tableDemographics.forEach((table) => {
   table.remove();
 });
 
-const colorLuminance = (hex, lum) => {
-  hex = String(hex).replace(/[^0-9a-f]/gi, "");
-  if (hex.length < 6) {
-    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-  }
-  lum = lum || 0;
-
-  // prettier-ignore
-  let rgb = "#", c, i;
-  for (i = 0; i < 3; i++) {
-    c = parseInt(hex.substr(i * 2, 2), 16);
-    c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
-    rgb += ("00" + c).substr(c.length);
-  }
-  return rgb;
-};
-
-const personasTable = (selector) => {
-  const colorScale = -0.1;
-  let elements = document.querySelectorAll(selector + " .column > *");
-  let counter = 0;
-  for (let idx = 0; idx < elements.length; idx++) {
-    const nextIdx = idx + 1 < elements.length ? idx + 1 : idx;
-    const nextElement = elements[nextIdx];
-    const element = elements[idx];
-    if (
-      !(
-        element.classList?.contains("image") &&
-        nextElement?.tagName?.toLowerCase() === "table"
-      )
-    )
-      continue;
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("personas-table");
-
-    if (counter === 0) {
-      wrapper.classList.add("personas-pie");
-      nextElement
-        .querySelectorAll("tr td:first-child")
-        .forEach((elem, idxTd) => {
-          elem.prepend(makeSvg(pieColors[idxTd]));
-        });
-    } else {
-      nextElement.querySelectorAll("tbody").forEach((item, idx) => {
-        Array.from(item.children).forEach((element, elemIdx) => {
-          if (counter === 1 && elemIdx !== 0) return;
-          const newItem = element.cloneNode(true);
-          element.before(newItem);
-          Array.from(newItem.children).forEach((val, idxTd) => {
-            if (idxTd === 0) return (val.innerText = "");
-            const color = pieColors[idxTd - 1];
-            const span = document.createElement("span");
-            span.innerText = "";
-            span.classList = "info-header-color";
-            span.style.backgroundColor = color
-              ? colorLuminance(color, elemIdx * colorScale)
-              : "transparent";
-            val.innerHTML = span.outerHTML;
-          });
-        });
-      });
-    }
-    element.parentNode.insertBefore(wrapper, element);
-    wrapper.appendChild(element);
-    wrapper.appendChild(nextElement);
-    idx++;
-    counter++;
-  }
-};
-personasTable(".overview-personas");
-
 // Add header notes
-const coverPage = document.querySelector(".page.cover");
-const pageName = coverPage?.querySelector("h3")?.innerText;
-const pageDate = coverPage?.querySelector("h4")?.innerText;
-document.querySelectorAll(".page").forEach((element) => {
-  const header = document.createElement("div");
-  header.classList.add("header-page");
-  header.innerHTML = `${pageName} Report | <b>${pageDate}</b>`;
-  element.appendChild(header);
-});
+const addHeaderName = (coverSelector, pageSelector) => {
+  const coverPage = document.querySelector(coverSelector);
+  const pageName = coverPage?.querySelector("h3")?.innerText;
+  const pageDate = coverPage?.querySelector("h4")?.innerText;
+  if (coverPage === null) return;
+  document.querySelectorAll(pageSelector).forEach((element) => {
+    const header = document.createElement("div");
+    header.classList.add("header-page");
+    header.innerHTML = `${pageName} Report | <b>${pageDate}</b>`;
+    element.appendChild(header);
+  });
+};
+
+addHeaderName(".page.cover", ".page");
